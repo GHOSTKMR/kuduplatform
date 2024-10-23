@@ -28,9 +28,10 @@
     border-radius: 10px; 
 }
 
-video { 
+iframe { 
     width: 100%; 
     border-radius: 10px; 
+    height: 400px; /* Set a fixed height for the iframe */
 }
 
 .controls, .comment-box h3, .related-videos h3 { 
@@ -77,26 +78,26 @@ video {
     background: #444; 
     padding: 15px; 
     border-radius: 10px; 
-    display: flex; /* Use flexbox */
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center items */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
 }
 
 .related-videos h3 { 
-    margin: 0 0 15px; /* Adjust margin for the header */
+    margin: 0 0 15px; 
 }
 
 .related-videos ul { 
-    list-style: none; /* Remove default list style */
+    list-style: none; 
     padding: 0;
     margin: 0;
-    width: 100%; /* Make the ul take full width */
+    width: 100%; 
 }
 
 .related-videos li { 
     background: #555; 
     cursor: pointer; 
-    padding: 5px; /* Smaller padding for a more compact look */
+    padding: 5px; 
     margin-bottom: 5px; 
     border-radius: 5px; 
     text-align: center; 
@@ -112,8 +113,8 @@ video {
     border-radius: 10px; 
     text-align: center; 
     margin-top: 30px; 
-    width: calc(70% + 40px); /* Make advertisement wider */
-    height: 300px; /* Set a fixed height for the advertisement */
+    width: calc(70% + 40px); 
+    height: 300px; 
 }
 
 .advertisement video { 
@@ -142,10 +143,7 @@ video {
         <div class="video-player">
             <h2 id="videoTitle">PNl</h2>
             <p id="videoDescription">How to make p n l</p>
-            <video id="myVideo" controls>
-                <source id="videoSource" src="https://ghostkmr.github.io/kuduportal/c.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <iframe id="myVideo" allowfullscreen></iframe>
             <div class="controls">
                 <button id="likeBtn">👍 Like <span id="likeCount">0</span></button>
                 <button id="dislikeBtn">👎 Dislike <span id="dislikeCount">0</span></button>
@@ -162,22 +160,19 @@ video {
         <div class="related-videos">
             <h3>You May Like</h3>
             <ul>
-                <li data-video-src="https://youtu.be/YkpSBU-ZtQk" data-video-title="NESTLE" data-video-description="Description of Video 1">fnb industry "Nestle"</li>
-                <li data-video-src="https://youtu.be/jB319zKf4RU" data-video-title="FNB" data-video-description="recuce food cost">Truth abut food industries</li>
-<li data-video-src="https://youtu.be/MhspjNiER9Q" data-video-title="MACD" data-video-description="profit n loss">Crazy TRuth About MacD</li>
-
+                <li data-video-src="https://www.youtube.com/embed/YkpSBU-ZtQk" data-video-title="NESTLE" data-video-description="Description of Video 1">fnb industry "Nestle"</li>
+                <li data-video-src="https://www.youtube.com/embed/jB319zKf4RU" data-video-title="FNB" data-video-description="recuce food cost">Truth about food industries</li>
+                <li data-video-src="https://www.youtube.com/embed/MhspjNiER9Q" data-video-title="MACD" data-video-description="profit n loss">Crazy Truth About MacD</li>
             </ul>
         </div>
     </div>
     <div class="advertisement">
         <video autoplay muted loop>
-            <source src="https://ghostkmr.github.io/kuduportal/b.mp4" type="video/mp4">
-            
+            <source src="C:\Users\moinr\Desktop\workstation\c.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <h4>Check out for movies!</h4>
-       <p><a href="https://moingit11.github.io/moingit11/hollywood.html" target="_blank">Kudu EnterTainment</a></p>
-
+        <p><a href="https://moingit11.github.io/moingit11/hollywood.html" target="_blank">Kudu EnterTainment</a></p>
     </div>
     <script>
         let likeCount = 0, dislikeCount = 0, previousVideoSrc = "";
@@ -201,11 +196,21 @@ video {
             }
         };
         const loadVideo = (src, title, description) => {
-            const video = document.getElementById('myVideo'), source = document.getElementById('videoSource');
-            previousVideoSrc = video.src; source.src = src; video.load(); document.getElementById('videoTitle').textContent = title; document.getElementById('videoDescription').textContent = description; video.play(); document.getElementById('backBtn').style.display = 'block';
+            const iframe = document.getElementById('myVideo');
+            previousVideoSrc = iframe.src; 
+            iframe.src = src; 
+            document.getElementById('videoTitle').textContent = title; 
+            document.getElementById('videoDescription').textContent = description; 
+            iframe.style.display = "block"; // Show iframe
+            document.getElementById('backBtn').style.display = 'block';
         };
         document.querySelectorAll('.related-videos li').forEach(item => item.onclick = () => loadVideo(item.dataset.videoSrc, item.dataset.videoTitle, item.dataset.videoDescription));
-        document.getElementById('backBtn').onclick = () => { if (previousVideoSrc) { document.getElementById('videoSource').src = previousVideoSrc; document.getElementById('myVideo').load(); document.getElementById('myVideo').play(); document.getElementById('backBtn').style.display = 'none'; } };
+        document.getElementById('backBtn').onclick = () => { 
+            if (previousVideoSrc) { 
+                document.getElementById('myVideo').src = previousVideoSrc; 
+                document.getElementById('backBtn').style.display = 'none'; 
+            } 
+        };
     </script>
 </body>
 </html>
