@@ -55,6 +55,18 @@
         button:hover {
             background-color: #45a049;
         }
+
+        .record {
+            margin: 5px 0;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .failure {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -168,7 +180,9 @@
         function displayRecords(records) {
             recordsDiv.innerHTML = '';
             records.forEach(record => {
-                recordsDiv.innerHTML += `<div>${record.orderName} - ${record.orderType} - ${record.time}</div>`;
+                const statusSymbol = (record.orderType === 'Front Counter' && record.seconds > 420) || (record.orderType === 'Drive Thru' && record.seconds > 300) ? '❌' : '✔️';
+                const statusClass = statusSymbol === '✔️' ? 'success' : 'failure';
+                recordsDiv.innerHTML += `<div class="record ${statusClass}">${statusSymbol} ${record.orderName} - ${record.orderType} - ${record.time}</div>`;
             });
         }
 
@@ -180,10 +194,11 @@
         function exportToExcel() {
             const records = JSON.parse(localStorage.getItem('records')) || [];
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Order Name,Order Type,Time\n";
+            csvContent += "Order Name,Order Type,Time,Status\n";
 
             records.forEach(record => {
-                csvContent += `${record.orderName},${record.orderType},${record.time}\n`;
+                const statusSymbol = (record.orderType === 'Front Counter' && record.seconds > 420) || (record.orderType === 'Drive Thru' && record.seconds > 300) ? '❌' : '✔️';
+                csvContent += `${record.orderName},${record.orderType},${record.time},${statusSymbol}\n`;
             });
 
             const encodedUri = encodeURI(csvContent);
