@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#f53f2b">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="Portfolio of Mueen Khan, Web Designer and Restaurant Manager">
+    <meta name="keywords" content="HTML, CSS, JavaScript, WordPress, Developer">
+    <meta name="author" content="Mueen Khan">
+    <link rel="shortcut icon" href="assets/img/aboutme.jpg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@master/devicon.min.css">
+    <script src="https://kit.fontawesome.com/4019246ab4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Mueen Khan | Web Designer / Restaurant Manager</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .landing {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 60px;
+            text-align: center;
+        }
+
+        .img img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .img img:hover {
+            transform: scale(1.1);
+        }
+
+        .me h2,
+        .me h3 {
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .about {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            color: #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            font-size: 2.5em;
+            color: #f53f2b;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .card-wrapper {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .box {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            flex-basis: 30%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .box img {
+            max-width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .box img:hover {
+            transform: scale(1.05);
+        }
+
+        .resume button,
+        button {
+            padding: 12px 25px;
+            background: #f53f2b;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .resume button:hover,
+        button:hover {
+            background: #c62828;
+            transform: scale(1.05);
+        }
+
+        .mainlist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sublist {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .icon {
+            margin-right: 15px;
+        }
+
+        .icon img,
+        .icon i {
+            width: 40px;
+            height: 40px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .footer a {
+            color: #f53f2b;
+            text-decoration: none;
+        }
+
+        .social-icons-bar {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .social-icons-bar.active {
+            display: flex;
+        }
+
+        .social-icons-bar a {
+            margin: 5px;
+            color: #fff;
+        }
+
+        .social-icons-bar img {
+            width: 28px;
+            height: 28px;
+        }
+
+        .social-toggle {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            cursor: pointer;
+            background: #333;
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .social-toggle .toggle-line {
+            width: 30px;
+            height: 4px;
+            background: #fff;
+            margin: 5px 0;
+            transition: background 0.3s ease;
+        }
+
+        .social-toggle:hover .toggle-line {
+            background: #f53f2b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="landing">
+        <div class="img animate__animated animate__slideInDown wow" data-wow-duration="1.5s" data-wow-delay="0.3s">
+            <img src="https://mueenulislam.github.io/f4.jpg" alt="Mueen Khan">
+        </div>
+        <div class="me animate__animated animate__slideInUp wow" data-wow-duration="1.5s" data-wow-delay="0.3s">
+            <section class="shortme">
+                <h2>Mueen Khan aka Ghost!!</h2>
+            </section>
+            <h3 id="typed"></h3>
+        </div>
+    </div>
+    <div class="about">
+        <div class="title">Portfolio</div>
+        <div class="card-wrapper">
+            <div class="box box1 animate__animated animate__slideInLeft wow" data-wow-duration="1s" data-wow-delay="0s">
+                <span><b>About Me</b></span>
+                <img src="https://mueenulislam.github.io/f2.jpg" alt="About Me">
+                <p>Hey! I am Mueen ul Islam Khan, aka Ghost, from India.<br>I have a degree in Computer Applications.<br>I love designing websites and have pursued a career in the restaurant field as a passion, wishing to evolve beyond boundaries.</p>
+            </div>
+            <div class="box box2 animate__animated animate__slideInUp wow" data-wow-duration="1s" data-wow-delay="0.37s">
+                <span><b>Skills</b></span>
+                <br><span>Programming</span>
+                <ul class="mainlist">
+                    <ul class="sublist">
+                        <li class="icon"><i class="devicon-c-plain-wordmark"></i></li>
+                        <li>C</li>
+                    </ul>
+                    <ul class="sublist">
+                        <li class="icon"><i class="devicon-cplusplus-plain-wordmark"></i></li>
+                        <li>C++</li>
+                    </ul>
+                    <ul class="sublist">
+                        <li class="icon"><i class="devicon-java-plain-wordmark"></i></li>
+                        <li>Java</li>
+                    </ul>
+                    <ul class="sublist">
+                        <li class="icon"><i class="devicon-css3-plain-wordmark"></i></li>
+                        <li>CSS</li>
+                    </ul>
+                    <ul class="sublist">
+                        <li class="icon"><i class="devicon-html5-plain-wordmark"></i></li>
+                        <li>HTML</li>
+                    </ul>
+                    <ul class="sublist">
+                        <li class="icon"><i class="devicon-javascript-plain"></i></li>
+                        <li>JavaScript</li>
+                    </ul>
+                    <ul class="sublist">
+                        <li class="icon"><i class="devicon-php-plain"></i></li>
+                        <li>PHP</li>
+                    </ul>
+                    <ul class="sublist">
+                        <li class="icon"><i class="devicon-wordpress-plain"></i></li>
+                        <li>WordPress</li>
+                    </ul>
+                </ul>
+            </div>
+            <div class="box box3 animate__animated animate__slideInRight wow" data-wow-duration="1s" data-wow-delay="0.37s">
+                <span><b>Contact</b></span>
+                <ul class="mainlist">
+                    <ul class="sublist">
+                        <li class="icon"><i class="fas fa-phone-alt"></i></li>
+                        <li>+966567341924</li>
+                    </ul>
+                    <ul class="sublist">
+                        <li class="icon"><i class="fas fa-envelope"></i></li>
+                        <li><a href="moinranzao2@gmail.com">yuhoooo!</a></li>
+                    </ul>
+                    <ul class="sublist">
+                        <li class="icon"><i class="fas fa-map-marker-alt"></i></li>
+                        <li>Delhi, India</li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+        <div class="resume">
+            <button type="button"><a href="assets/resume.pdf" download="Mueen_Khan_Resume.pdf">Download Resume</a></button>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Designed by <a href="https://github.com/Mueenulislam" target="_blank">Mueen Khan</a></p>
+    </div>
+    <div class="social-toggle">
+        <div class="toggle-line"></div>
+        <div class="toggle-line"></div>
+        <div class="toggle-line"></div>
+    </div>
+    <div class="social-icons-bar">
+        <a href="https://github.com/" target="_blank"><img src="assets/img/github.svg" alt="Github"></a>
+        <a href="https://www.linkedin.com/in/mueen-khan-34a515226/" target="_blank"><img src="assets/img/linkedin.svg" alt="LinkedIn"></a>
+        <a href="https://twitter.com/mueenul_15" target="_blank"><img src="assets/img/twitter.svg" alt="Twitter"></a>
+    </div>
+    <script>
+        document.querySelector('.social-toggle').addEventListener('click', function () {
+            document.querySelector('.social-icons-bar').classList.toggle('active');
+        });
+    </script>
+    <script src="assets/js/typed.js"></script>
+    <script>
+        var options = {
+            strings: ["Web Designer", "Restaurant Manager", "Freelancer"],
+            typeSpeed: 60,
+            backSpeed: 40,
+            loop: true,
+        };
+        var typed = new Typed("#typed", options);
+    </script>
+</body>
+
+</html>
