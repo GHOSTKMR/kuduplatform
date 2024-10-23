@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vegetable Ordering Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            background-color: black;
+            color: #fff;
+            max-width: 800px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+        }
+        .input-field {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="number"] {
+            padding: 5px;
+            width: 100px; /* Smaller width */
+            background-color: #444;
+            color: white;
+            border: 1px solid #666;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            background-color: rgba(31, 31, 31, 0.8);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            background-color: #333;
+        }
+        button {
+            padding: 6px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 10px;
+        }
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .footer p {
+            margin: 0;
+            padding: 0;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Vegetable Ordering Calculator</h1>
+
+<div class="input-container">
+    <div class="input-field">
+        <label for="avgSales">Avg Daily Sales</label>
+        <input type="number" id="avgSales" value="1000" oninput="calculateOrders()" step="any">
+    </div>
+    <div class="input-field">
+        <label for="salesForecast">Sales Forecast</label>
+        <input type="number" id="salesForecast" value="10000" oninput="calculateOrders()" step="any">
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Item Code</th>
+            <th>Item Name</th>
+            <th>Avg Daily (kg)</th>
+            <th>On Hand (kg)</th>
+            <th>Receiving (kg)</th>
+            <th>Buffer (%)</th>
+            <th>Total On Hand (kg)</th>
+            <th>C/1K</th> <!-- New column for C/1K -->
+            <th>3 Days Order (kg)</th>
+            <th>4 Days Order (kg)</th>
+        </tr>
+    </thead>
+    <tbody id="itemsTable">
+        <!-- Table rows will be generated dynamically -->
+    </tbody>
+</table>
+
+<button onclick="exportToExcel()">Export to Excel</button>
+
+<div class="footer">
+    <p>Made by <a href="https://nuzhatkhan123.github.io/kudu/about.html" target="_blank" rel="noopener noreferrer">GHostKmr.</a></p>
+</div>
+
+<script>
+    const items = [
+        { code: '120069', name: 'Tomato', avg: 2, piecesPerPacket: 1 },
+        { code: '120071', name: 'Onion', avg: 2, piecesPerPacket: 1 },
+        { code: '120072', name: 'Green Pepper', avg: 1, piecesPerPacket: 1 },
+        { code: '120073', name: 'Onion Chimes', avg: 0.25, piecesPerPacket: 0.25 }, // 250 grams in a bundle
+        { code: '120074', name: 'Cucumber', avg: 1, piecesPerPacket: 1 },
+        { code: '120340', name: 'Lettuce Shredded', avg: 2, piecesPerPacket: 1 },
+        { code: '120344', name: 'Cherry Tomato', avg: 2, piecesPerPacket: 1 },
+        { code: '120389', name: 'Salad Lunch', avg: 3, piecesPerPacket: 1 }
+    ];
+
+    const tableBody = document.getElementById('itemsTable');
+
+    // Populate table rows dynamically
+    items.forEach((item, index) => {
+        const savedAvg = loadValue(`avg${index}`) || item.avg; // Load saved average or use default
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${item.code}</td>
+            <td>${item.name}</td>
+            <td><input type="number" id="avg${index}" value="${savedAvg}" step="any" oninput="saveValue('avg${index}', this.value); calculateOrders();"></td>
+            <td><input type="number" id="onHand${index}" oninput="calculateOrders();"></td>
+            <td><input type="number" id="receivingToday${index}" oninput="calculateOrders();"></td>
+            <td>
+                <select id="buffer${index}" oninput="calculateOrders();">
+                    <option value="0">0%</option>
+                    <option value="0.25">25%</option>
+                    <option value="0.50">50%</option>
+                    <option value="0.75">75%</option>
+                    <option value="1">100%</option>
+                </select>
+            </td>
+            <td id="totalOnHand${index}">0</td>
+            <td id="c1k${index}">0</td> <!-- New cell for C/1K -->
+            <td id="toOrder3Days${index}">0</td>
+            <td id="toOrder4Days${index}">0</td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    function saveValue(key, value) {
+        localStorage.setItem(key, value);
+    }
+
+    function loadValue(key) {
+        return localStorage.getItem(key);
+    }
+
+    function calculateOrders() {
+        const avgSales = parseFloat(document.getElementById('avgSales').value) || 1000;
+        const salesForecast = parseFloat(document.getElementById('salesForecast').value) || 10000;
+
+        items.forEach((item, index) => {
+            const avgDailyConsumption = parseFloat(document.getElementById(`avg${index}`).value) || item.avg;
+            const onHand = parseFloat(document.getElementById(`onHand${index}`).value) || 0;
+            const receivingToday = parseFloat(document.getElementById(`receivingToday${index}`).value) || 0;
+            const bufferMultiplier = parseFloat(document.getElementById(`buffer${index}`).value);
+
+            // Calculate total on hand
+            const totalOnHand = onHand + receivingToday;
+            document.getElementById(`totalOnHand${index}`).innerText = totalOnHand.toFixed(2);
+
+            // Calculate C/1K
+            const c1kValue = (avgDailyConsumption / avgSales) * 1000;
+            document.getElementById(`c1k${index}`).innerText = c1kValue.toFixed(2);
+
+            // Adjust order for 3-day and 4-day based on sales forecast
+            const forecast3Days = (c1kValue * salesForecast / 1000) * 3 - totalOnHand;
+            const toOrder3Days = Math.max(0, forecast3Days * (1 + bufferMultiplier));
+            document.getElementById(`toOrder3Days${index}`).innerText = toOrder3Days.toFixed(2);
+
+            const forecast4Days = (c1kValue * salesForecast / 1000) * 4 - totalOnHand;
+            const toOrder4Days = Math.max(0, forecast4Days * (1 + bufferMultiplier));
+            document.getElementById(`toOrder4Days${index}`).innerText = toOrder4Days.toFixed(2);
+        });
+    }
+
+    function exportToExcel() {
+        let csv = 'Item Code,Item Name,Avg Daily (kg),On Hand (kg),Receiving (kg),Buffer (%),Total On Hand (kg),C/1K,3 Days Order (kg),4 Days Order (kg)\n';
+        items.forEach((item, index) => {
+            const avgDaily = document.getElementById(`avg${index}`).value;
+            const onHand = document.getElementById(`onHand${index}`).value;
+            const receiving = document.getElementById(`receivingToday${index}`).value;
+            const buffer = document.getElementById(`buffer${index}`).value;
+            const totalOnHand = document.getElementById(`totalOnHand${index}`).innerText;
+            const c1k = document.getElementById(`c1k${index}`).innerText;
+            const order3Days = document.getElementById(`toOrder3Days${index}`).innerText;
+            const order4Days = document.getElementById(`toOrder4Days${index}`).innerText;
+
+            csv += `${item.code},${item.name},${avgDaily},${onHand},${receiving},${buffer},${totalOnHand},${c1k},${order3Days},${order4Days}\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.setAttribute('href', URL.createObjectURL(blob));
+        link.setAttribute('download', 'vegetable_orders.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+</body>
+</html>
