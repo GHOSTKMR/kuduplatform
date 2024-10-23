@@ -143,7 +143,7 @@
         { code: '110023', name: 'Big Bun', avg: 42, piecesPerPacket: 6 },
         { code: '110024', name: 'Small Bun', avg: 30, piecesPerPacket: 6 },
         { code: '110027', name: 'Kiddie Bread', avg: 60, piecesPerPacket: 4 },
-        { code: '110028', name: 'Cruton Bread', avg: 30, piecesPerPacket: 15 },
+        { code: '110028', name: 'Crouton Bread', avg: 30, piecesPerPacket: 15 },
         { code: '110087', name: 'Kudu Small Bun', avg: 6, piecesPerPacket: 1 },
         { code: '110088', name: 'Riyadh White Bread', avg: 216, piecesPerPacket: 18 },
         { code: '110133', name: 'Kudu Potato Bun', avg: 48, piecesPerPacket: 6 },
@@ -155,12 +155,11 @@
 
     // Populate table rows dynamically
     items.forEach((item, index) => {
-        const savedAvg = loadValue(`avg${index}`) || item.avg; // Load saved average or use default
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${item.code}</td>
             <td>${item.name}</td>
-            <td><input type="number" id="avg${index}" value="${savedAvg}" step="any" oninput="saveValue('avg${index}', this.value); calculateOrders();"></td>
+            <td><input type="number" id="avg${index}" value="${item.avg}" step="any" oninput="calculateOrders();"></td>
             <td><input type="number" id="onHand${index}" oninput="calculateOrders();"></td>
             <td><input type="number" id="receivingToday${index}" oninput="calculateOrders();"></td>
             <td>
@@ -175,18 +174,10 @@
             <td id="totalOnHand${index}">0</td>
             <td id="toOrder${index}">0</td>
             <td id="toOrderPackets${index}">0</td>
-            <td id="c1k${index}">0</td> <!-- New cell for C/1K -->
+            <td id="c1k${index}">0</td>
         `;
         tableBody.appendChild(row);
     });
-
-    function saveValue(key, value) {
-        localStorage.setItem(key, value);
-    }
-
-    function loadValue(key) {
-        return localStorage.getItem(key);
-    }
 
     function calculateOrders() {
         const avgSales = parseFloat(document.getElementById('avgSales').value) || 1000;
@@ -196,59 +187,50 @@
             const avgDailyConsumption = parseFloat(document.getElementById(`avg${index}`).value) || item.avg;
             const onHand = parseFloat(document.getElementById(`onHand${index}`).value) || 0;
             const receivingToday = parseFloat(document.getElementById(`receivingToday${index}`).value) || 0;
-            const bufferMultiplier = parseFloat(document.getElementById(`buffer${index}`).value);
+            const bufferMultiplier = parseFloat(document.getElementById(`buffer${index}`).value) || 0;
 
             // Calculate total on hand
             const totalOnHand = onHand + receivingToday;
             document.getElementById(`totalOnHand${index}`).innerText = totalOnHand.toFixed(2);
 
-            // Calculate buffer
-            const buffer = avgDailyConsumption * bufferMultiplier;
+            // Calculate C/1K
+            const c1kValue = (avgDailyConsumption / avgSales) * 1000;
+            document.getElementById(`c1k${index}`).innerText = c1kValue.toFixed(2);
 
-            // Calculate to order using the buffer and subtract total on hand
-            const toOrder = Math.max(0, buffer - totalOnHand);
+            // Calculate order based on forecast
+            const forecastOrder = c1kValue * (salesForecast / 1000);
+            document.getElementById(`toOrder${index}`).innerText = forecastOrder.toFixed(2);
+
+            // Calculate the buffer amount to add based on selected percentage
+            const buffer = forecastOrder * bufferMultiplier; // Use percentage of the forecast order
+
+            // Calculate total order considering on hand and receiving
+            const toOrder = Math.max(0, forecastOrder - totalOnHand + buffer);
             document.getElementById(`toOrder${index}`).innerText = toOrder.toFixed(2);
 
             // Calculate the number of packets
             const packets = Math.ceil(toOrder / item.piecesPerPacket);
             document.getElementById(`toOrderPackets${index}`).innerText = packets;
-
-            // Calculate C/1K
-            const c1kValue = (avgDailyConsumption / avgSales) * 1000;
-            document.getElementById(`c1k${index}`).innerText = c1kValue.toFixed(2);
-
-            // Adjust order based on sales forecast
-            const forecastOrder = (c1kValue * salesForecast) / 1000;
-            document.getElementById(`toOrder${index}`).innerText = forecastOrder.toFixed(2);
         });
     }
 
     function exportToExcel() {
-        let csv = 'Item Code,Item Name,Avg Daily,On Hand,Receiving,Buffer,Total,Order (Pcs),Order (Pkts),C/1K\n';
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Item Code,Item Name,Pcs to Order\n"; // Header row
+
         items.forEach((item, index) => {
-            const avg = document.getElementById(`avg${index}`).value || '';
-            const onHand = document.getElementById(`onHand${index}`).value || '';
-            const receiving = document.getElementById(`receivingToday${index}`).value || '';
-            const buffer = document.getElementById(`buffer${index}`).value || '';
-            const total = document.getElementById(`totalOnHand${index}`).innerText || '';
-            const toOrder = document.getElementById(`toOrder${index}`).innerText || '';
-            const packets = document.getElementById(`toOrderPackets${index}`).innerText || '';
-            const c1k = document.getElementById(`c1k${index}`).innerText || '';
-            csv += `${item.code},${item.name},${avg},${onHand},${receiving},${buffer},${total},${toOrder},${packets},${c1k}\n`;
+            const toOrder = document.getElementById(`toOrder${index}`).innerText;
+            csvContent += `${item.code},${item.name},${toOrder}\n`;
         });
 
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'bun_ordering_report.csv');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "bun_order.csv");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     }
-
-    // Initial calculation
-    calculateOrders();
 </script>
 
 </body>
