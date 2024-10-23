@@ -99,17 +99,15 @@
         setInterval(updateTime, 1000); // Update time every second
         updateTime(); // Initial call
 
+        // Clear localStorage to prevent automatic redirect on load
+        localStorage.removeItem('accessGranted'); 
+
         // Password Handling
         const correctPassword = "ghost123"; // Set your password here
         const nextPageURL = "https://github.com/GHOSTKMR/kuduplatform/edit/main/navigation.html"; // Redirect page
         const passwordForm = document.getElementById('passwordForm');
         const passwordInput = document.getElementById('password');
         const errorMessage = document.getElementById('errorMessage');
-
-        // Check if the password has already been entered correctly and stored in localStorage
-        if (localStorage.getItem('accessGranted') === 'true') {
-            window.location.href = nextPageURL; // Redirect to the next page automatically
-        }
 
         passwordForm.addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent form submission
