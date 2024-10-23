@@ -202,12 +202,11 @@
             const totalOnHand = onHand + receivingToday;
             document.getElementById(`totalOnHand${index}`).innerText = totalOnHand.toFixed(2);
 
-            // Adjust for twice the daily consumption
-            const adjustedOnHand = totalOnHand - (2 * avgDailyConsumption);
-
-            // Calculate to order using the buffer
+            // Calculate buffer
             const buffer = avgDailyConsumption * bufferMultiplier;
-            const toOrder = Math.max(0, buffer - adjustedOnHand);
+
+            // Calculate to order using the buffer and subtract total on hand
+            const toOrder = Math.max(0, buffer - totalOnHand);
             document.getElementById(`toOrder${index}`).innerText = toOrder.toFixed(2);
 
             // Calculate the number of packets
@@ -225,28 +224,31 @@
     }
 
     function exportToExcel() {
-        let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Item Code,Item Name,Pcs to Order\n"; // Header row
-
+        let csv = 'Item Code,Item Name,Avg Daily,On Hand,Receiving,Buffer,Total,Order (Pcs),Order (Pkts),C/1K\n';
         items.forEach((item, index) => {
-            const toOrder = document.getElementById(`toOrder${index}`).innerText;
-            csvContent += `${item.code},${item.name},${toOrder}\n`; // Data rows
+            const avg = document.getElementById(`avg${index}`).value || '';
+            const onHand = document.getElementById(`onHand${index}`).value || '';
+            const receiving = document.getElementById(`receivingToday${index}`).value || '';
+            const buffer = document.getElementById(`buffer${index}`).value || '';
+            const total = document.getElementById(`totalOnHand${index}`).innerText || '';
+            const toOrder = document.getElementById(`toOrder${index}`).innerText || '';
+            const packets = document.getElementById(`toOrderPackets${index}`).innerText || '';
+            const c1k = document.getElementById(`c1k${index}`).innerText || '';
+            csv += `${item.code},${item.name},${avg},${onHand},${receiving},${buffer},${total},${toOrder},${packets},${c1k}\n`;
         });
 
-        // Create a link to download the CSV
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "bun_ordering.csv");
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'bun_ordering_report.csv');
         document.body.appendChild(link);
-        link.click(); // Trigger the download
-        document.body.removeChild(link); // Clean up
+        link.click();
+        document.body.removeChild(link);
     }
 
-    // Load initial values for the average daily consumption
-    items.forEach((item, index) => {
-        document.getElementById(`avg${index}`).value = loadValue(`avg${index}`) || item.avg;
-    });
+    // Initial calculation
+    calculateOrders();
 </script>
 
 </body>
