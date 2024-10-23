@@ -7,7 +7,85 @@
     <style>
         body {
             background-color: black;
+            color: #00ff00;<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Page</title>
+    <style>
+        body {
+            background-color: black;
             color: #00ff00;
+            font-family: "Courier New", Courier, monospace;
+            text-align: center;
+            padding-top: 20%;
+        }
+        input[type="password"] {
+            background-color: black;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px;
+            font-size: 18px;
+            font-family: "Courier New", Courier, monospace;
+        }
+        input[type="submit"] {
+            background-color: black;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-family: "Courier New", Courier, monospace;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #00ff00;
+            color: black;
+        }
+        .error {
+            color: red;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Access Restricted</h1>
+    <form id="passwordForm">
+        <input type="password" id="password" placeholder="Enter Password">
+        <br><br>
+        <input type="submit" value="Submit">
+        <div id="errorMessage" class="error"></div>
+    </form>
+
+    <script>
+        const correctPassword = "ghost123"; // Set your password here
+        const nextPageURL = "https://ghostkmr.github.io/WORK-STATION/navigation.html"; // Redirect page
+        const passwordForm = document.getElementById('passwordForm');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Check if the password has already been entered correctly and stored in localStorage
+        if (localStorage.getItem('accessGranted') === 'true') {
+            window.location.href = nextPageURL; // Redirect to the next page automatically
+        }
+
+        passwordForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            if (passwordInput.value === correctPassword) {
+                localStorage.setItem('accessGranted', 'true'); // Store access confirmation in localStorage
+                window.location.href = nextPageURL; // Redirect to the next page
+            } else {
+                errorMessage.textContent = "Access Denied. Incorrect password.";
+                passwordInput.value = ""; // Clear the input
+            }
+        });
+    </script>
+
+</body>
+</html>
+
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
             display: flex;
