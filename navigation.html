@@ -71,6 +71,37 @@
             transform: scale(1);
         }
 
+        .navbar .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.85);
+            min-width: 160px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            border-radius: 3px;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
         .content {
             text-align: center;
             margin-top: 120px; /* Adjusted to leave space for navbar */
@@ -91,12 +122,17 @@
 <body>
     <div class="navbar">
         <ul>
-            <li onclick="navigateTo('https://ghostkmr.github.io/WORK-STATION/inventory.html')">Inventory Module</li>
-            <li onclick="navigateTo('https://ghostkmr.github.io/WORK-STATION/exp.html')">Expiration Tracker</li>
-            <li onclick="navigateTo('https://ghostkmr.github.io/WORK-STATION/bunordering.html')">Ordering Bread</li>
-            <li onclick="navigateTo('https://ghostkmr.github.io/WORK-STATION/veg.html')">Veg. Ordering</li>
-            <li onclick="navigateTo('https://ghostkmr.github.io/WORK-STATION/gallery.html')">Gallery</li>
-            <li onclick="navigateTo('https://ghostkmr.github.io/WORK-STATION/aboutdev.html')">Developer</li>
+            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/inventorymanagement.html')">Inventory Module</li>
+            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/expirationtracker.html')">Expiration Tracker</li>
+            <li class="dropdown">
+                Ordering
+                <div class="dropdown-content">
+                    <a href="https://ghostkmr.github.io/kuduplatform/bunordering.html">Ordering Bread</a>
+                    <a href="https://ghostkmr.github.io/kuduplatform/vegtableordering.html">Veg. Ordering</a>
+                </div>
+            </li>
+            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/gallery.html')">Gallery</li>
+            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/aboutdeveloper.html')">Developer</li>
         </ul>
     </div>
     <div class="content">
