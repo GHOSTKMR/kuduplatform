@@ -15,7 +15,14 @@
             height: 100vh;
             margin: 0;
             text-align: center;
+            flex-direction: column;
         }
+
+        #clock, #calendar {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
         input[type="password"] {
             background-color: black;
             color: #00ff00;
@@ -50,6 +57,9 @@
 </head>
 <body>
 
+    <div id="calendar"></div>
+    <div id="clock"></div>
+
     <div class="container">
         <h1>Access Restricted</h1>
         <form id="passwordForm">
@@ -61,6 +71,35 @@
     </div>
 
     <script>
+        // Clock and Calendar
+        function updateTime() {
+            const now = new Date();
+            const clock = document.getElementById('clock');
+            const calendar = document.getElementById('calendar');
+
+            // Format time (HH:MM:SS AM/PM)
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // If 0, set to 12
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            const timeString = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+
+            // Format date (e.g., Tuesday, October 23, 2024)
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = now.toLocaleDateString(undefined, options);
+
+            clock.textContent = timeString;
+            calendar.textContent = dateString;
+        }
+
+        setInterval(updateTime, 1000); // Update time every second
+        updateTime(); // Initial call
+
+        // Password Handling
         const correctPassword = "ghost123"; // Set your password here
         const nextPageURL = "https://ghostkmr.github.io/kuduplatform/navigation.html"; // Redirect page
         const passwordForm = document.getElementById('passwordForm');
