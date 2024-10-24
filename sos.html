@@ -20,53 +20,54 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            object-fit: cover; /* Ensures the video covers the entire area */
+            object-fit: cover;
             z-index: -1;
             filter: grayscale(100%);
         }
 
         .container {
-            margin: 20px auto;
-            width: 90%; /* Adjusted for mobile responsiveness */
-            max-width: 400px;
+            margin: 10px auto;
+            width: 95%; /* Adjusted for compactness */
+            max-width: 350px; /* Slightly reduced max-width */
             position: relative;
             z-index: 1;
         }
 
         .stopwatch {
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .circle {
-            width: 180px; /* Reduced size for mobile */
-            height: 180px;
+            width: 150px; /* Reduced size */
+            height: 150px;
             border-radius: 50%;
-            border: 10px solid green;
+            border: 8px solid green; /* Slightly thinner border */
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px; /* Adjusted for mobile readability */
+            font-size: 20px; /* Reduced font size */
             margin: 0 auto;
         }
 
         .buttons {
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         input, select {
-            margin: 10px 0;
-            padding: 10px;
-            width: calc(100% - 22px);
+            margin: 8px 0;
+            padding: 8px;
+            width: calc(100% - 18px);
+            font-size: 14px; /* Reduced input font size */
         }
 
         button {
-            padding: 10px 15px;
-            margin: 10px 5px;
+            padding: 8px 12px;
+            margin: 8px 3px;
             background-color: #4CAF50;
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 14px; /* Adjusted for mobile */
+            font-size: 12px; /* Reduced button font size */
         }
 
         button:hover {
@@ -74,7 +75,7 @@
         }
 
         .record {
-            margin: 5px 0;
+            margin: 3px 0;
         }
 
         .success {
@@ -93,13 +94,13 @@
             }
 
             .circle {
-                width: 150px;
-                height: 150px;
-                font-size: 22px;
+                width: 130px;
+                height: 130px;
+                font-size: 18px;
             }
 
             button {
-                font-size: 12px;
+                font-size: 11px;
             }
         }
     </style>
