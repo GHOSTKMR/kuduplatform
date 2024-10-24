@@ -4,139 +4,140 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Video Player</title>
-   <style>
-   body { 
-    font-family: Arial, sans-serif; 
-    margin: 0; 
-    padding: 0; 
-    background: #000; 
-    color: #fff; 
-    display: flex; 
-    justify-content: center; 
-}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.container { 
-    display: flex; 
-    width: 80%; 
-}
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-top: 20px;
+        }
 
-.video-player { 
-    width: 70%; 
-    margin: 30px 20px 30px 0; 
-    background: #333; 
-    padding: 15px; 
-    border-radius: 10px; 
-}
+        .video-player {
+            flex: 3; /* Adjusted to take up more space */
+            margin-right: 20px;
+            background: #333;
+            padding: 15px;
+            border-radius: 10px;
+        }
 
-iframe { 
-    width: 100%; 
-    border-radius: 10px; 
-    height: 400px; /* Set a fixed height for the iframe */
-}
+        iframe {
+            width: 100%;
+            border-radius: 10px;
+            height: 400px; /* Set a fixed height for the iframe */
+        }
 
-.controls, .comment-box h3, .related-videos h3 { 
-    text-align: center; 
-}
+        .controls, .comment-box h3, .related-videos h3 {
+            text-align: center;
+        }
 
-.controls button, .back-button, #commentBtn { 
-    background: #444; 
-    color: white; 
-    border: none; 
-    padding: 10px; 
-    margin: 10px; 
-    border-radius: 5px; 
-    cursor: pointer; 
-}
+        .controls button, .back-button, #commentBtn {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-.controls button:hover, .back-button:hover { 
-    background: #666; 
-}
+        .controls button:hover, .back-button:hover {
+            background: #666;
+        }
 
-#commentInput { 
-    width: 100%; 
-    height: 80px; 
-    border-radius: 5px; 
-    border: 1px solid #ccc; 
-    padding: 10px; 
-}
+        #commentInput {
+            width: 100%;
+            height: 80px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
 
-#commentList { 
-    list-style: none; 
-    padding: 0; 
-}
+        #commentList {
+            list-style: none;
+            padding: 0;
+        }
 
-#commentList li { 
-    background: #222; 
-    padding: 10px; 
-    margin-bottom: 10px; 
-    border-radius: 5px; 
-}
+        #commentList li {
+            background: #222;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
 
-.related-videos { 
-    width: 30%; 
-    margin-left: 20px; 
-    background: #444; 
-    padding: 15px; 
-    border-radius: 10px; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-}
+        .related-videos {
+            flex: 1; /* Adjusted to take less space */
+            margin-left: 20px;
+            background: #444;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.related-videos h3 { 
-    margin: 0 0 15px; 
-}
+        .related-videos h3 {
+            margin: 0 0 15px;
+        }
 
-.related-videos ul { 
-    list-style: none; 
-    padding: 0;
-    margin: 0;
-    width: 100%; 
-}
+        .related-videos ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
 
-.related-videos li { 
-    background: #555; 
-    cursor: pointer; 
-    padding: 5px; 
-    margin-bottom: 5px; 
-    border-radius: 5px; 
-    text-align: center; 
-}
+        .related-videos li {
+            background: #555;
+            cursor: pointer;
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
 
-.related-videos li:hover { 
-    background: #666; 
-}
+        .related-videos li:hover {
+            background: #666;
+        }
 
-.advertisement { 
-    position: relative; 
-    overflow: hidden; 
-    border-radius: 10px; 
-    text-align: center; 
-    margin-top: 30px; 
-    width: calc(70% + 40px); 
-    height: 300px; 
-}
+        .advertisement {
+            width: 80%; /* Full width for better visibility */
+            height: 300px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            text-align: center;
+        }
 
-.advertisement video { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    z-index: -1; 
-    opacity: 0.7; 
-}
+        .advertisement video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.7;
+        }
 
-.advertisement h4, .advertisement a { 
-    position: relative; 
-    z-index: 1; 
-    color: #fff; 
-    text-decoration: underline; 
-}
-
-</style>
-
+        .advertisement h4, .advertisement a {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -158,14 +159,14 @@ iframe {
             </div>
         </div>
         <div class="related-videos">
-            <h3>you might like</h3>
+            <h3>You Might Like</h3>
             <ul>
-                <li data-video-src="https://www.youtube.com/embed/YkpSBU-ZtQk" data-video-title="NESTLE" data-video-description="Description of Video 1">fnb industry "Nestle"</li>
-                <li data-video-src="https://www.youtube.com/embed/jB319zKf4RU" data-video-title="FNB" data-video-description="">Truth about food industries</li>
+                <li data-video-src="https://www.youtube.com/embed/YkpSBU-ZtQk" data-video-title="NESTLE" data-video-description="Description of Video 1">FNB Industry "Nestle"</li>
+                <li data-video-src="https://www.youtube.com/embed/jB319zKf4RU" data-video-title="FNB" data-video-description="">Truth About Food Industries</li>
                 <li data-video-src="https://www.youtube.com/embed/MhspjNiER9Q" data-video-title="MACD" data-video-description="">Crazy Truth About MacD</li>
                 <li data-video-src="https://youtu.be/myv7yydtCKc" data-video-title="MACD" data-video-description="">Junk Food</li>
-                <li data-video-src="https://youtu.be/K3ksKkCOgTw" data-video-title="MACD" data-video-description="">secrets of shugar</li>
-                <li data-video-src="https://youtu.be/ELu8y6eK-0g" data-video-title="MACD" data-video-description="">disturbing history of cocacola</li>
+                <li data-video-src="https://youtu.be/K3ksKkCOgTw" data-video-title="MACD" data-video-description="">Secrets of Sugar</li>
+                <li data-video-src="https://youtu.be/ELu8y6eK-0g" data-video-title="MACD" data-video-description="">Disturbing History of Coca-Cola</li>
             </ul>
         </div>
     </div>
@@ -175,7 +176,7 @@ iframe {
             Your browser does not support the video tag.
         </video>
         <h4>Other Links</h4>
-        <p><a href="https://moingit11.github.io/moingit11/hollywood.html" target="_blank"> EnterTainment</a></p>
+        <p><a href="https://moingit11.github.io/moingit11/hollywood.html" target="_blank">EnterTainment</a></p>
     </div>
     <script>
         let likeCount = 0, dislikeCount = 0, previousVideoSrc = "";
@@ -200,19 +201,19 @@ iframe {
         };
         const loadVideo = (src, title, description) => {
             const iframe = document.getElementById('myVideo');
-            previousVideoSrc = iframe.src; 
-            iframe.src = src; 
-            document.getElementById('videoTitle').textContent = title; 
-            document.getElementById('videoDescription').textContent = description; 
+            previousVideoSrc = iframe.src;
+            iframe.src = src;
+            document.getElementById('videoTitle').textContent = title;
+            document.getElementById('videoDescription').textContent = description;
             iframe.style.display = "block"; // Show iframe
             document.getElementById('backBtn').style.display = 'block';
         };
         document.querySelectorAll('.related-videos li').forEach(item => item.onclick = () => loadVideo(item.dataset.videoSrc, item.dataset.videoTitle, item.dataset.videoDescription));
-        document.getElementById('backBtn').onclick = () => { 
-            if (previousVideoSrc) { 
-                document.getElementById('myVideo').src = previousVideoSrc; 
-                document.getElementById('backBtn').style.display = 'none'; 
-            } 
+        document.getElementById('backBtn').onclick = () => {
+            if (previousVideoSrc) {
+                document.getElementById('myVideo').src = previousVideoSrc;
+                document.getElementById('backBtn').style.display = 'none';
+            }
         };
     </script>
 </body>
