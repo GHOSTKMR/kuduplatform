@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Navigation Webpage</title>
+    <title>Compact Navigation and Contact Menus</title>
     <style>
         body {
             margin: 0;
@@ -21,40 +21,97 @@
             align-items: center;
         }
 
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.85);
-            padding: 10px 20px;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-        }
-
-        .navbar ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .navbar li {
+        /* General Button Styling */
+        .burger-menu button, .contact-menu button {
+            font-size: 24px;
+            color: white;
+            background-color: rgba(51, 51, 51, 0.8); /* semi-transparent background */
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
             cursor: pointer;
-            padding: 10px 20px;
-            margin: 0 10px;
-            border-radius: 3px;
-            transition: background-color 0.3s, transform 0.2s;
-            position: relative;
-            overflow: hidden;
-            font-size: 14px;
         }
 
-        .navbar li:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
+        .burger-menu button:hover, .contact-menu button:hover {
+            background-color: #000;
         }
 
+        /* Compact Burger Menu for Navigation */
+        .burger-menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background-color: rgba(51, 51, 51, 0.8);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1000;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 10px 12px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #000;
+        }
+
+        .burger-menu.active .dropdown-content {
+            display: block;
+        }
+
+        /* Contact Menu */
+        .contact-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        /* Contact Icons (hidden initially, slide from right) */
+        .contact-bar {
+            position: fixed;
+            top: 60px;
+            right: -200px; /* Hidden off-screen initially */
+            width: 180px;
+            transform: translateY(0);
+            transition: right 0.3s ease;
+            background-color: rgba(51, 51, 51, 0.8); /* semi-transparent background */
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 999;
+        }
+
+        .contact-bar a {
+            margin: 10px;
+            display: block;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-bar a img {
+            width: 32px;
+        }
+
+        .contact-bar a:hover {
+            background-color: #000;
+            padding: 5px;
+        }
+
+        /* Additional content styling */
         .content {
             text-align: center;
             margin-top: 120px;
@@ -66,6 +123,16 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
 
+        #prototype-message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: yellow;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -73,31 +140,57 @@
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <ul>
-            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/inventorymanagement.html')">Inventory Module</li>
-            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/expirationtracker.html')">Expiration Tracker</li>
-            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/bunordering.html')">Bun Ordering</li>
-            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/vegetableordering.html')">Vegetable Ordering</li>
-            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/gallery.html')">Gallery</li>
-             <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/sos.html')">s.o.s tracker</li>
-        
-            <li onclick="navigateTo('https://ghostkmr.github.io/kuduplatform/aboutdeveloper.html')">Developer</li>
-        </ul>
-    </div>
-    <div class="content">
-        <h1 id="welcome-message">Welcome!</h1>
+
+    <!-- Compact Burger Menu for Navigation -->
+    <div class="burger-menu">
+        <button onclick="toggleMenu()">&#9776; Menu</button>
+        <div class="dropdown-content">
+            <a href="https://ghostkmr.github.io/kuduplatform/inventorymanagement.html">Inventory Module</a>
+            <a href="https://ghostkmr.github.io/kuduplatform/expirationtracker.html">Expiration Tracker</a>
+            <a href="https://ghostkmr.github.io/kuduplatform/bunordering.html">Bun Ordering</a>
+            <a href="https://ghostkmr.github.io/kuduplatform/vegetableordering.html">Vegetable Ordering</a>
+            <a href="https://ghostkmr.github.io/kuduplatform/gallery.html">Gallery</a>
+            <a href="https://ghostkmr.github.io/kuduplatform/sos.html">S.O.S Tracker</a>
+            <a href="https://ghostkmr.github.io/kuduplatform/aboutdeveloper.html">Developer</a>
+        </div>
     </div>
 
+    <!-- Compact Contact Burger Menu -->
+    <div class="contact-menu">
+        <button onclick="toggleContact()">&#9993; Contacts</button>
+        <div class="contact-bar" id="contactBar">
+            <a href="https://www.facebook.com/ranzao" target="_blank"><img src="C:/Users/moinr/Desktop/mywebsite/f.png" alt="Facebook"></a>
+            <a href="https://wa.me/916006476187?text=Hello%20there!" target="_blank"><img src="C:/Users/moinr/Desktop/mywebsite/wh.png" alt="WhatsApp"></a>
+            <a href="https://www.linkedin.com/in/mueen-khan-1448ab2a1/" target="_blank"><img src="C:/Users/moinr/Desktop/mywebsite/li.jpeg" alt="LinkedIn"></a>
+            <a href="https://www.instagram.com/areeba_zahra_khan/" target="_blank"><img src="C:/Users/moinr/Desktop/mywebsite/in.webp" alt="Instagram"></a>
+            <a href="mailto:moinranzao2@gmail.com" target="_blank"><img src="C:/Users/moinr/Desktop/mywebsite/gm.png" alt="Gmail"></a>
+            <a href="tel:+966567341924" target="_blank"><img src="C:/Users/moinr/Desktop/mywebsite/ph.jpeg" alt="Call"></a>
+        </div>
+    </div>
+
+    <!-- Welcome Message Content -->
+    <div class="content">
+        <h1 id="welcome-message">Welcome!</h1>
+        <div id="prototype-message">
+            This is a prototype page, not the final result. Any modifications or updates will be reflected in the future versions.
+        </div>
+    </div>
+
+    <!-- Script for burger menu toggle -->
     <script>
-        function navigateTo(page) {
-            const messageElement = document.getElementById('welcome-message');
-            messageElement.textContent = `You Are At ${page.split('/').pop().replace('.html', '')} page!`;
-            // Navigate after a short delay to allow the message to show
-            setTimeout(() => {
-                window.location.href = page;
-            }, 1000); // Change to desired delay time in milliseconds
+        function toggleMenu() {
+            document.querySelector('.burger-menu').classList.toggle('active');
+        }
+
+        function toggleContact() {
+            const contactBar = document.getElementById('contactBar');
+            if (contactBar.style.right === '0px') {
+                contactBar.style.right = '-200px';  // Slide out of view
+            } else {
+                contactBar.style.right = '0px';  // Slide into view
+            }
         }
     </script>
+
 </body>
 </html>
