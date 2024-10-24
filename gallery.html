@@ -3,143 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Video Player</title>
+    <title>GALLERY Media Player</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #000;
-            color: #fff;
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f9f9f9; 
+            color: #000; 
+        }
+
+        header {
+            background-color: #ff0000;
+            padding: 10px 20px;
             display: flex;
-            flex-direction: column;
             align-items: center;
         }
 
-        .container {
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
-            margin-top: 20px;
+        header h1 { 
+            color: #fff; 
+            font-size: 24px; 
+            margin: 0; 
         }
 
-        .video-player {
-            flex: 3; /* Adjusted to take up more space */
-            margin-right: 20px;
-            background: #333;
-            padding: 15px;
-            border-radius: 10px;
+        .container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            width: 90%; 
+            max-width: 1200px; 
+            margin: 20px auto; 
         }
 
-        iframe {
-            width: 100%;
-            border-radius: 10px;
-            height: 400px; /* Set a fixed height for the iframe */
+        .video-player { 
+            flex: 2; 
+            margin-right: 20px; 
+            background: #fff; 
+            padding: 15px; 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
         }
 
-        .controls, .comment-box h3, .related-videos h3 {
-            text-align: center;
+        iframe { 
+            width: 100%; 
+            border-radius: 10px; 
+            height: 400px; 
         }
 
-        .controls button, .back-button, #commentBtn {
-            background: #444;
-            color: white;
-            border: none;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-            cursor: pointer;
+        .controls, .comment-box h3 { 
+            text-align: center; 
         }
 
-        .controls button:hover, .back-button:hover {
-            background: #666;
+        .controls button, .back-button, #commentBtn { 
+            background: #f1f1f1; 
+            color: #333; 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            margin: 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
         }
 
-        #commentInput {
-            width: 100%;
-            height: 80px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            padding: 10px;
+        .controls button:hover, .back-button:hover { 
+            background: #e0e0e0; 
         }
 
-        #commentList {
-            list-style: none;
-            padding: 0;
+        #commentInput { 
+            width: 100%; 
+            height: 80px; 
+            border-radius: 5px; 
+            border: 1px solid #ccc; 
+            padding: 10px; 
         }
 
-        #commentList li {
-            background: #222;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
+        #commentList { 
+            list-style: none; 
+            padding: 0; 
         }
 
-        .related-videos {
-            flex: 1; /* Adjusted to take less space */
-            margin-left: 20px;
-            background: #444;
-            padding: 15px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        #commentList li { 
+            background: #f9f9f9; 
+            padding: 10px; 
+            margin-bottom: 10px; 
+            border-radius: 5px; 
+            border: 1px solid #ddd; 
         }
 
-        .related-videos h3 {
-            margin: 0 0 15px;
+        .related-videos { 
+            flex: 1; 
+            background: #fff; 
+            padding: 15px; 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
         }
 
-        .related-videos ul {
-            list-style: none;
-            padding: 0;
+        .related-videos h3 { 
+            margin: 0 0 10px; 
+            font-size: 1.5em; 
+            text-align: center; 
+        }
+
+        .related-videos ul { 
+            list-style: none; 
+            padding: 0; 
             margin: 0;
-            width: 100%;
         }
 
-        .related-videos li {
-            background: #555;
-            cursor: pointer;
-            padding: 5px;
-            margin-bottom: 5px;
-            border-radius: 5px;
-            text-align: center;
+        .related-videos li { 
+            background: #f1f1f1; 
+            cursor: pointer; 
+            padding: 8px; 
+            margin-bottom: 5px; 
+            border-radius: 5px; 
+            text-align: left; 
+            font-size: 0.9em; 
         }
 
-        .related-videos li:hover {
-            background: #666;
+        .related-videos li:hover { 
+            background: #e0e0e0; 
         }
 
-        .advertisement {
-            width: 80%; /* Full width for better visibility */
-            height: 300px;
-            margin-top: 30px;
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            text-align: center;
+        .advertisement { 
+            position: relative; 
+            overflow: hidden; 
+            border-radius: 10px; 
+            text-align: center; 
+            margin-top: 30px; 
+            width: 100%; 
+            height: 300px; 
         }
 
-        .advertisement video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.7;
+        .advertisement video { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            z-index: -1; 
+            opacity: 0.7; 
         }
 
-        .advertisement h4, .advertisement a {
-            position: relative;
-            z-index: 1;
-            color: #fff;
-            text-decoration: underline;
+        .advertisement h4, .advertisement a { 
+            position: relative; 
+            z-index: 1; 
+            color: #fff; 
+            text-decoration: underline; 
+        }
+
+        @media (max-width: 768px) {
+            .video-player, .related-videos { 
+                width: 100%; 
+                margin: 10px 0; 
+            }
+            .related-videos { 
+                margin-left: 0; 
+            }
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Prototype Media Player</h1>
+    </header>
     <div class="container">
         <div class="video-player">
             <h2 id="videoTitle"></h2>
@@ -176,7 +201,7 @@
             Your browser does not support the video tag.
         </video>
         <h4>Other Links</h4>
-        <p><a href="https://moingit11.github.io/moingit11/hollywood.html" target="_blank">EnterTainment</a></p>
+        <p><a href="https://moingit11.github.io/moingit11/hollywood.html" target="_blank"> EnterTainment</a></p>
     </div>
     <script>
         let likeCount = 0, dislikeCount = 0, previousVideoSrc = "";
@@ -187,33 +212,67 @@
             document.getElementById('dislikeCount').textContent = dislikeCount;
             const comments = JSON.parse(localStorage.getItem('comments')) || [];
             const commentList = document.getElementById('commentList');
-            comments.forEach(comment => { const li = document.createElement('li'); li.textContent = comment; commentList.appendChild(li); });
+            comments.forEach(comment => { 
+                const li = document.createElement('li'); 
+                li.textContent = comment; 
+                commentList.appendChild(li); 
+            });
         };
-        document.getElementById('likeBtn').onclick = () => { document.getElementById('likeCount').textContent = ++likeCount; localStorage.setItem('likeCount', likeCount); };
-        document.getElementById('dislikeBtn').onclick = () => { document.getElementById('dislikeCount').textContent = ++dislikeCount; localStorage.setItem('dislikeCount', dislikeCount); };
+
+        document.getElementById('likeBtn').onclick = () => { 
+            document.getElementById('likeCount').textContent = ++likeCount; 
+            localStorage.setItem('likeCount', likeCount); 
+        };
+
+        document.getElementById('dislikeBtn').onclick = () => { 
+            document.getElementById('dislikeCount').textContent = ++dislikeCount; 
+            localStorage.setItem('dislikeCount', dislikeCount); 
+        };
+
         document.getElementById('commentBtn').onclick = () => {
             const commentInput = document.getElementById('commentInput');
             if (commentInput.value) {
-                const li = document.createElement('li'); li.textContent = commentInput.value; document.getElementById('commentList').appendChild(li);
-                const comments = JSON.parse(localStorage.getItem('comments')) || []; comments.push(commentInput.value); localStorage.setItem('comments', JSON.stringify(comments));
+                const li = document.createElement('li'); 
+                li.textContent = commentInput.value; 
+                document.getElementById('commentList').appendChild(li);
+                const comments = JSON.parse(localStorage.getItem('comments')) || [];
+                comments.push(commentInput.value);
+                localStorage.setItem('comments', JSON.stringify(comments));
                 commentInput.value = '';
             }
         };
-        const loadVideo = (src, title, description) => {
+
+        const videos = document.querySelectorAll('.related-videos li');
+        videos.forEach(video => {
+            video.onclick = () => {
+                previousVideoSrc = document.getElementById('myVideo').src;
+                loadVideo(video.getAttribute('data-video-src'), video.getAttribute('data-video-title'), video.getAttribute('data-video-description'));
+            };
+        });
+
+        function loadVideo(src, title, description) {
             const iframe = document.getElementById('myVideo');
-            previousVideoSrc = iframe.src;
             iframe.src = src;
             document.getElementById('videoTitle').textContent = title;
             document.getElementById('videoDescription').textContent = description;
-            iframe.style.display = "block"; // Show iframe
+            iframe.style.display = "block";
             document.getElementById('backBtn').style.display = 'block';
-        };
-        document.querySelectorAll('.related-videos li').forEach(item => item.onclick = () => loadVideo(item.dataset.videoSrc, item.dataset.videoTitle, item.dataset.videoDescription));
+        }
+
         document.getElementById('backBtn').onclick = () => {
-            if (previousVideoSrc) {
-                document.getElementById('myVideo').src = previousVideoSrc;
-                document.getElementById('backBtn').style.display = 'none';
-            }
+            const iframe = document.getElementById('myVideo');
+            iframe.src = previousVideoSrc;
+            document.getElementById('videoTitle').textContent = "";
+            document.getElementById('videoDescription').textContent = "";
+            iframe.style.display = "none"; 
+            document.getElementById('backBtn').style.display = 'none';
+        };
+
+        document.getElementById('shareBtn').onclick = () => {
+            const iframe = document.getElementById('myVideo');
+            navigator.clipboard.writeText(iframe.src).then(() => {
+                alert("Video link copied to clipboard!");
+            });
         };
     </script>
 </body>
