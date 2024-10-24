@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GALLERY Media Player</title>
+    <title>YouTube-Like Video Player</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
             margin: 0; 
             padding: 0; 
-            background: #f9f9f9; 
-            color: #000; 
+            background: #000; /* Black background */
+            color: #fff; /* White text color */
         }
 
         header {
@@ -37,10 +37,10 @@
         .video-player { 
             flex: 2; 
             margin-right: 20px; 
-            background: #fff; 
+            background: #1c1c1c; /* Dark background for video player */
             padding: 15px; 
             border-radius: 10px; 
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); 
         }
 
         iframe { 
@@ -73,6 +73,7 @@
             border-radius: 5px; 
             border: 1px solid #ccc; 
             padding: 10px; 
+            background: #fff; /* White background for comment input */
         }
 
         #commentList { 
@@ -81,25 +82,26 @@
         }
 
         #commentList li { 
-            background: #f9f9f9; 
+            background: #2a2a2a; /* Darker background for comments */
             padding: 10px; 
             margin-bottom: 10px; 
             border-radius: 5px; 
-            border: 1px solid #ddd; 
+            border: 1px solid #444; 
         }
 
         .related-videos { 
             flex: 1; 
-            background: #fff; 
+            background: #1c1c1c; /* Dark background for related videos */
             padding: 15px; 
             border-radius: 10px; 
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); 
         }
 
         .related-videos h3 { 
             margin: 0 0 10px; 
             font-size: 1.5em; 
             text-align: center; 
+            color: #fff; /* White color for title */
         }
 
         .related-videos ul { 
@@ -109,17 +111,19 @@
         }
 
         .related-videos li { 
-            background: #f1f1f1; 
+            background: #000; /* Black background for related video items */
+            color: #fff; /* White text color */
             cursor: pointer; 
             padding: 8px; 
             margin-bottom: 5px; 
             border-radius: 5px; 
             text-align: left; 
             font-size: 0.9em; 
+            border: 1px solid #444; /* Border for video items */
         }
 
         .related-videos li:hover { 
-            background: #e0e0e0; 
+            background: #444; /* Slightly lighter on hover */
         }
 
         .advertisement { 
@@ -163,7 +167,7 @@
 </head>
 <body>
     <header>
-        <h1>Prototype Media Player</h1>
+        <h1>YouTube-Like Video Player</h1>
     </header>
     <div class="container">
         <div class="video-player">
@@ -232,7 +236,7 @@
         document.getElementById('commentBtn').onclick = () => {
             const commentInput = document.getElementById('commentInput');
             if (commentInput.value) {
-                const li = document.createElement('li'); 
+                const li = document.createElement('li');
                 li.textContent = commentInput.value; 
                 document.getElementById('commentList').appendChild(li);
                 const comments = JSON.parse(localStorage.getItem('comments')) || [];
