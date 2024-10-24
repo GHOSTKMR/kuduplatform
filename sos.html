@@ -27,8 +27,8 @@
 
         .container {
             margin: 10px auto;
-            width: 95%; /* Adjusted for compactness */
-            max-width: 350px; /* Slightly reduced max-width */
+            width: 95%;
+            max-width: 350px;
             position: relative;
             z-index: 1;
         }
@@ -53,25 +53,56 @@
             margin-top: 10px;
         }
 
+        /* Smaller input boxes */
         input, select {
             margin: 8px 0;
-            padding: 8px;
-            width: calc(100% - 18px);
-            font-size: 14px; /* Reduced input font size */
+            padding: 6px; /* Reduced padding */
+            width: calc(100% - 20px); /* Slightly reduced width */
+            font-size: 12px; /* Reduced input font size */
         }
 
-        button {
-            padding: 8px 12px;
-            margin: 8px 3px;
-            background-color: #4CAF50;
+        /* Radio buttons alignment and style */
+        .radio-container {
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .radio-container label {
+            margin: 0 10px;
+            font-size: 12px;
+        }
+
+        /* Button Colors */
+        #startBtn {
+            background-color: #4CAF50; /* Green */
             color: white;
             border: none;
+            padding: 6px 10px;
             cursor: pointer;
-            font-size: 12px; /* Reduced button font size */
+            font-size: 11px;
+        }
+
+        #stopBtn {
+            background-color: red; /* Red */
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        #clearBtn {
+            background-color: blue; /* Blue */
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 11px;
         }
 
         button:hover {
-            background-color: #45a049;
+            opacity: 0.9;
         }
 
         .record {
@@ -100,7 +131,7 @@
             }
 
             button {
-                font-size: 11px;
+                font-size: 10px;
             }
         }
     </style>
@@ -124,10 +155,17 @@
         </div>
         <div class="input-container">
             <input type="text" id="orderName" placeholder="Order Name" required>
-            <select id="orderType">
-                <option value="frontCounter">Front Counter</option>
-                <option value="driveThru">Drive Thru</option>
-            </select>
+
+            <!-- Radio button replacement for the dropdown -->
+            <div class="radio-container">
+                <label>
+                    <input type="radio" name="orderType" value="frontCounter" checked> Front Counter
+                </label>
+                <label>
+                    <input type="radio" name="orderType" value="driveThru"> Drive Thru
+                </label>
+            </div>
+
             <button id="saveBtn">Save Time</button>
         </div>
         <button id="exportBtn">Export to Excel</button>
@@ -146,7 +184,7 @@
         const exportBtn = document.getElementById('exportBtn');
         const clearAllBtn = document.getElementById('clearAllBtn');
         const orderNameInput = document.getElementById('orderName');
-        const orderTypeSelect = document.getElementById('orderType');
+        const orderTypeRadio = document.querySelectorAll('input[name="orderType"]');
         const recordsDiv = document.getElementById('records');
 
         startBtn.addEventListener('click', startTimer);
@@ -179,7 +217,8 @@
             let displaySeconds = seconds % 60;
             timerDisplay.textContent = `${pad(minutes)}:${pad(displaySeconds)}`;
 
-            if (orderTypeSelect.value === 'frontCounter') {
+            const orderType = document.querySelector('input[name="orderType"]:checked').value;
+            if (orderType === 'frontCounter') {
                 if (seconds >= 420) { // 7 minutes
                     timerDisplay.style.borderColor = 'red';
                 } else if (seconds >= 360) { // 6 minutes
@@ -187,7 +226,7 @@
                 } else {
                     timerDisplay.style.borderColor = 'green';
                 }
-            } else if (orderTypeSelect.value === 'driveThru') {
+            } else if (orderType === 'driveThru') {
                 if (seconds >= 300) { // 5 minutes
                     timerDisplay.style.borderColor = 'red';
                 } else if (seconds >= 240) { // 4 minutes
@@ -204,7 +243,7 @@
 
         function saveTime() {
             const orderName = orderNameInput.value;
-            const orderType = orderTypeSelect.value === 'frontCounter' ? 'Front Counter' : 'Drive Thru';
+            const orderType = document.querySelector('input[name="orderType"]:checked').value === 'frontCounter' ? 'Front Counter' : 'Drive Thru';
             const timeRecord = {
                 orderName,
                 orderType,
@@ -231,32 +270,28 @@
 
         function clearAllRecords() {
             localStorage.removeItem('records');
-            recordsDiv.innerHTML = ''; // Clear displayed records
+            recordsDiv.innerHTML = '';
         }
 
         function exportToExcel() {
-            const records = JSON.parse(localStorage.getItem('records')) || [];
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Order Name,Order Type,Time,Status\n";
-
+            let records = JSON.parse(localStorage.getItem('records')) || [];
+            let csvContent = "data:text/csv;charset=utf-8,Order Name,Order Type,Time\n";
             records.forEach(record => {
-                const statusSymbol = (record.orderType === 'Front Counter' && record.seconds > 420) || (record.orderType === 'Drive Thru' && record.seconds > 300) ? '❌' : '✔️';
-                csvContent += `${record.orderName},${record.orderType},${record.time},${statusSymbol}\n`;
+                csvContent += `${record.orderName},${record.orderType},${record.time}\n`;
             });
-
             const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "service_records.csv");
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', 'records.csv');
             document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
         }
 
-        // Display existing records on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const records = JSON.parse(localStorage.getItem('records')) || [];
+        window.onload = function () {
+            let records = JSON.parse(localStorage.getItem('records')) || [];
             displayRecords(records);
-        });
+        };
     </script>
 </body>
 </html>
