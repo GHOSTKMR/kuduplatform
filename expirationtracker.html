@@ -26,20 +26,30 @@
         .clear-btn { background-color: #dc3545; }
         .export-btn { background-color: #007bff; }
         .hide-btn { background-color: #ffc107; }
-        .show-btn { background-color: #28a745; display: none; }
-        .video-btn { background-color: #17a2b8; }
+        .video-btn { background-color: #000000; } /* Watch Video button set to black */
         .result { margin-top: 20px; padding: 10px; background-color: #e9ecef; border: 1px solid #ced4da; border-radius: 4px; }
         ul { list-style-type: none; padding: 0; }
         li { padding: 5px 0; }
         .red { color: red; }
         .orange { color: orange; }
         .green { color: green; }
+        .notification-icon {
+            position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer; color: red;
+        }
+        .notification-count {
+            color: red; font-weight: bold; font-size: 14px; position: absolute; right: 20px; top: 10px; 
+            transform: translateY(-100%); 
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
 <div class="container">
+    <span class="notification-icon" id="notificationIcon" onclick="showNotifications()">
+        📥
+        <span class="notification-count" id="notificationCount"><sup>0</sup></span>
+    </span>
     <form id="expiryForm">
         <label for="productName">Enter Product Name:</label>
         <input type="text" id="productName" name="productName" required>
@@ -50,9 +60,8 @@
     <input type="search" id="searchBox" placeholder="Search Products..." onkeyup="searchProducts()">
     <button class="clear-btn" id="clearData">Clear Data</button>
     <button class="export-btn" id="exportData">Export to Excel</button>
-    <button class="hide-btn" id="hideData">Hide</button>
-    <button class="show-btn" id="showData">Show</button>
-    <button class="video-btn" id="watchVideo">Watch Video</button>
+    <button class="hide-btn" id="toggleData">Hide</button>
+    <button class="video-btn" id="watchVideo">Watch Video</button> <!-- Watch Video button now black -->
     <div class="result">
         <h3>Product List:</h3>
         <ul id="productList"></ul>
@@ -66,31 +75,36 @@
         event.preventDefault();
         const productName = document.getElementById('productName').value;
         const expiryDate = new Date(document.getElementById('expiryDate').value);
-        const product = { name: productName, date: expiryDate.toLocaleDateString(), daysRemaining: calculateDaysRemaining(expiryDate), dayOfWeek: expiryDate.toLocaleDateString('en-US', { weekday: 'long' }) };
-        addProductToList(product); saveProductToLocalStorage(product);
+        const product = { 
+            name: productName, 
+            date: expiryDate.toLocaleDateString(), 
+            daysRemaining: calculateDaysRemaining(expiryDate), 
+            dayOfWeek: expiryDate.toLocaleDateString('en-US', { weekday: 'long' }) 
+        };
+        addProductToList(product); 
+        saveProductToLocalStorage(product);
+        updateNotificationCount();
         document.getElementById('expiryForm').reset();
     });
 
     document.getElementById('clearData').addEventListener('click', function() {
         localStorage.removeItem('products');
         document.getElementById('productList').innerHTML = '';
+        updateNotificationCount();
     });
 
     document.getElementById('exportData').addEventListener('click', exportToExcel);
-    document.getElementById('hideData').addEventListener('click', toggleProductList);
-    document.getElementById('showData').addEventListener('click', toggleProductList);
+    document.getElementById('toggleData').addEventListener('click', toggleProductList);
     document.getElementById('watchVideo').addEventListener('click', function() {
         window.open('https://youtu.be/jDg8DQl7ZeQ', '_blank'); // Replace with your video URL
     });
 
     function toggleProductList() {
         const productList = document.getElementById('productList');
-        const hideButton = document.getElementById('hideData');
-        const showButton = document.getElementById('showData');
+        const hideButton = document.getElementById('toggleData');
         const isHidden = productList.style.display === 'none';
         productList.style.display = isHidden ? 'block' : 'none';
-        hideButton.style.display = isHidden ? 'none' : 'inline-block';
-        showButton.style.display = isHidden ? 'inline-block' : 'none';
+        hideButton.textContent = isHidden ? 'Hide' : 'Show';
     }
 
     function addProductToList(product) {
@@ -131,9 +145,28 @@
         });
     }
 
+    function updateNotificationCount() {
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+        const nearExpiryCount = products.filter(product => product.daysRemaining < 5).length;
+        const notificationCountElement = document.getElementById('notificationCount');
+        
+        // Set the notification count to display in superscript
+        notificationCountElement.innerHTML = nearExpiryCount > 0 ? `<sup>${nearExpiryCount}</sup>` : '<sup>0</sup>';
+    }
+
+    function showNotifications() {
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+        const nearExpiryProducts = products.filter(product => product.daysRemaining < 5);
+        const notificationMessage = nearExpiryProducts.length > 0 
+            ? nearExpiryProducts.map(p => `${p.name}: ${p.daysRemaining} days remaining`).join('\n') 
+            : 'No near-expiry products.';
+        alert(notificationMessage);
+    }
+
+    // Load products when the page loads
     window.onload = function() {
         loadProductsFromLocalStorage();
-        setInterval(loadProductsFromLocalStorage, 3600000);
+        updateNotificationCount();
     };
 </script>
 
