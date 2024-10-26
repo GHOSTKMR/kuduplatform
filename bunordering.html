@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -153,13 +154,28 @@
 
     const tableBody = document.getElementById('itemsTable');
 
+    // Retrieve saved avg daily values from localStorage
+    function loadAvgValues() {
+        items.forEach((item, index) => {
+            const savedAvg = localStorage.getItem(`avg${item.code}`);
+            const avgValue = savedAvg !== null ? parseFloat(savedAvg) : item.avg;
+            document.getElementById(`avg${index}`).value = avgValue;
+        });
+    }
+
+    // Save avg daily values to localStorage when input changes
+    function saveAvgValue(index, code) {
+        const avgValue = document.getElementById(`avg${index}`).value;
+        localStorage.setItem(`avg${code}`, avgValue);
+    }
+
     // Populate table rows dynamically
     items.forEach((item, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${item.code}</td>
             <td>${item.name}</td>
-            <td><input type="number" id="avg${index}" value="${item.avg}" step="any" oninput="calculateOrders();"></td>
+            <td><input type="number" id="avg${index}" value="${item.avg}" step="any" oninput="calculateOrders(); saveAvgValue(${index}, '${item.code}')"></td>
             <td><input type="number" id="onHand${index}" oninput="calculateOrders();"></td>
             <td><input type="number" id="receivingToday${index}" oninput="calculateOrders();"></td>
             <td>
@@ -179,6 +195,12 @@
         tableBody.appendChild(row);
     });
 
+    // Load saved average values on page load
+    window.onload = function() {
+        loadAvgValues();
+        calculateOrders();
+    };
+
     function calculateOrders() {
         const avgSales = parseFloat(document.getElementById('avgSales').value) || 1000;
         const salesForecast = parseFloat(document.getElementById('salesForecast').value) || 10000;
@@ -189,26 +211,20 @@
             const receivingToday = parseFloat(document.getElementById(`receivingToday${index}`).value) || 0;
             const bufferMultiplier = parseFloat(document.getElementById(`buffer${index}`).value) || 0;
 
-            // Calculate total on hand
             const totalOnHand = onHand + receivingToday;
             document.getElementById(`totalOnHand${index}`).innerText = totalOnHand.toFixed(2);
 
-            // Calculate C/1K
             const c1kValue = (avgDailyConsumption / avgSales) * 1000;
             document.getElementById(`c1k${index}`).innerText = c1kValue.toFixed(2);
 
-            // Calculate order based on forecast
             const forecastOrder = c1kValue * (salesForecast / 1000);
             document.getElementById(`toOrder${index}`).innerText = forecastOrder.toFixed(2);
 
-            // Calculate the buffer amount to add based on selected percentage
-            const buffer = forecastOrder * bufferMultiplier; // Use percentage of the forecast order
+            const buffer = forecastOrder * bufferMultiplier;
 
-            // Calculate total order considering on hand and receiving
             const toOrder = Math.max(0, forecastOrder - totalOnHand + buffer);
             document.getElementById(`toOrder${index}`).innerText = toOrder.toFixed(2);
 
-            // Calculate the number of packets
             const packets = Math.ceil(toOrder / item.piecesPerPacket);
             document.getElementById(`toOrderPackets${index}`).innerText = packets;
         });
@@ -216,7 +232,7 @@
 
     function exportToExcel() {
         let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Item Code,Item Name,Pcs to Order\n"; // Header row
+        csvContent += "Item Code,Item Name,Pcs to Order\n";
 
         items.forEach((item, index) => {
             const toOrder = document.getElementById(`toOrder${index}`).innerText;
@@ -232,6 +248,5 @@
         document.body.removeChild(link);
     }
 </script>
-
 </body>
 </html>
