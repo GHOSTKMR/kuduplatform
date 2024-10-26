@@ -18,14 +18,15 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            transition: background-image 1s ease; /* Smooth transition */
+            overflow: hidden; /* Prevent scrollbars */
+            position: relative;
         }
 
         /* General Button Styling */
         .burger-menu button, .contact-menu button {
             font-size: 24px;
             color: white;
-            background-color: rgba(51, 51, 51, 0.8); /* semi-transparent background */
+            background-color: rgba(51, 51, 51, 0.8);
             padding: 8px 12px;
             border: none;
             border-radius: 5px;
@@ -133,6 +134,16 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
         }
 
+        /* Fade effect for background images */
+        .fade {
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -192,24 +203,37 @@
             }
         }
 
-        // Background image slideshow
+        // Background image slideshow with fade effect
         const images = [
             'https://scontent.fruh6-1.fna.fbcdn.net/v/t1.6435-9/64786596_2264797470255676_6910596074252009472_n.jpg?stp=dst-jpg_p526x296&_nc_cat=105&ccb=1-7&_nc_sid=0327a3&_nc_ohc=KXk4yu9OlwcQ7kNvgFLB0Fg&_nc_zt=23&_nc_ht=scontent.fruh6-1.fna&_nc_gid=Ax2f8CpH81cSoZE3p-xHD-l&oh=00_AYC4oMFfW5Rlud1d8Jt82vRd8bvumcSWrvFIYZywNewlSw&oe=67409932',
-            'https://scontent.fruh6-2.fna.fbcdn.net/v/t1.6435-9/65386051_2283049271763829_8582185427320963072_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=13d280&_nc_ohc=tOnEgHzOSXMQ7kNvgEFDPjW&_nc_zt=23&_nc_ht=scontent.fruh6-2.fna&_nc_gid=ArRFjowMU73tLNOKwIyd5_f&oh=00_AYDONtAzflDVxppfV2NfAY_WHWh2H1_C24jJHZoyql8lDg&oe=6744CD3E',
-            'https://saudimenuhub.com/wp-content/uploads/2023/12/375763362_611322304506044_6918044493654625128_n.jpg',
-            'https://kudu.store/dailyspecial/img/Daily-offer-Thu.jpg',
-            'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi5o_JJPsmBI49V6gmmZ0hk3_RgJauKPk9MxF6kINqhwYthsdqcemUD9V5OOkG4gH7CAcSRyLJssieyh_GbDGUi_n8oqGYNxoQ01BeBAmD_mhCpFV1v2jbSfEvaJOQl3U-WOoTaG1FLQeZVtEyT81chjnRnwsaQSZ0_fhF7hWCm6sqTEV6A92LOcaJh1g/s1600-e90-rw/%D9%85%D8%B7%D8%B9%D9%85%20%D9%83%D9%88%D8%AF%D9%88%20%D9%85%D9%86%D9%8A%D9%88-2.jpg'
+            'https://scontent.fruh6-2.fna.fbcdn.net/v/t1.6435-9/65386051_2283049271763829_8582185427320963072_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=13d280&_nc_ohc=tOnEgHzOSXMQ7kNvgEFDPjW&_nc_zt=23&_nc_ht=scontent.fruh6-2.fna&_nc_gid=ArRFjowMU73tLNOKwIyd5_f&oh=00_AYDONtAzflDVxpp-gik5hFhZ60Z7ltDTaK0FzAT4BCOFAw&oe=6741188D',
+            // Add more images as needed
         ];
 
-        let currentImageIndex = 0;
+        let currentIndex = 0;
 
-        function changeBackgroundImage() {
-            document.body.style.backgroundImage = `url('${images[currentImageIndex]}')`;
-            currentImageIndex = (currentImageIndex + 1) % images.length;
+        function changeBackground() {
+            const body = document.body;
+            const nextIndex = (currentIndex + 1) % images.length;
+
+            // Set next image
+            const nextImage = new Image();
+            nextImage.src = images[nextIndex];
+            nextImage.classList.add('fade');
+
+            // Fade out current background
+            body.classList.add('hidden');
+            setTimeout(() => {
+                body.style.backgroundImage = `url(${nextImage.src})`;
+                body.classList.remove('hidden');
+            }, 1000); // Time for fade out
+
+            currentIndex = nextIndex;
         }
 
-        setInterval(changeBackgroundImage, 2000); // Change image every 2 seconds
+        // Initial setup
+        changeBackground();
+        setInterval(changeBackground, 5000); // Change image every 5 seconds
     </script>
-
 </body>
 </html>
