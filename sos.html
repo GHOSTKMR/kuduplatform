@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-image: url('https://i.etsystatic.com/14917380/r/il/7f941b/3365029100/il_570xN.3365029100_tvdw.jpg'); /* Replace with your stopwatch image URL */
+            background-image: url('https://i.etsystatic.com/14917380/r/il/7f941b/3365029100/il_570xN.3365029100_tvdw.jpg'); /* Stopwatch background */
             background-size: cover; /* Cover the entire background */
             background-position: center;
             color: white; /* Change text color for better contrast */
@@ -54,6 +54,16 @@
         button:hover {
             background-color: #218838; /* Darker green on hover */
         }
+        /* New styles for alignment */
+        .radio-group,
+        .button-group {
+            display: flex;
+            justify-content: center; /* Center the radio and button groups */
+            margin: 10px 0; /* Add some vertical space */
+        }
+        .button-group button {
+            margin: 0 5px; /* Add some space between buttons */
+        }
     </style>
 </head>
 <body>
@@ -63,12 +73,18 @@
 
     <div>
         <input type="text" id="orderName" placeholder="Order Name" />
+    </div>
+
+    <div class="radio-group">
         <label>
             <input type="radio" name="orderType" value="frontCounter" checked /> Front Counter
         </label>
         <label>
             <input type="radio" name="orderType" value="driveThru" /> Drive Thru
         </label>
+    </div>
+
+    <div class="button-group">
         <button id="addOrderBtn">Add Order</button>
         <button id="clearAllBtn">Clear All Orders</button>
         <button id="exportBtn">Export to Excel</button>
