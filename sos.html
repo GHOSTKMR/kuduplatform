@@ -3,295 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Speed Recorder</title>
+    <title>Multi Order Tracker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            color: white;
-            text-align: center;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            background-image: url('https://henderson-biomedical.co.uk/wp-content/uploads/2023/05/chronometer-scaled-1.jpg'); /* Replace with your stopwatch image URL */
+            background-size: cover; /* Cover the entire background */
+            background-position: center;
+            color: white; /* Change text color for better contrast */
+            text-align: center; /* Center text */
         }
-
-        /* Full-screen video background optimized for mobile */
-        #backgroundVideo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -1;
-            filter: grayscale(100%);
-        }
-
         .container {
-            margin: 10px auto;
-            width: 95%;
-            max-width: 350px;
-            position: relative;
-            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block; /* Center the container */
         }
-
-        .stopwatch {
-            margin: 15px 0;
-        }
-
-        .circle {
-            width: 150px; /* Reduced size */
-            height: 150px;
-            border-radius: 50%;
-            border: 8px solid green; /* Slightly thinner border */
+        .order-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 20px; /* Reduced font size */
-            margin: 0 auto;
+            justify-content: center; /* Center items horizontally */
+            margin-bottom: 10px;
         }
-
-        .buttons {
-            margin-top: 10px;
+        .order-timer {
+            margin-left: 10px;
+            min-width: 60px; /* Ensure space for timer display */
         }
-
-        /* Smaller input boxes */
-        input, select {
-            margin: 8px 0;
-            padding: 6px; /* Reduced padding */
-            width: calc(100% - 20px); /* Slightly reduced width */
-            font-size: 12px; /* Reduced input font size */
+        .status-symbol {
+            margin-left: 10px;
+            font-size: 1.5em;
         }
-
-        /* Radio buttons alignment and style */
-        .radio-container {
-            margin: 10px 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        .radio-container label {
-            margin: 0 10px;
-            font-size: 12px;
-        }
-
-        /* Button Colors */
-        #startBtn {
-            background-color: #4CAF50; /* Green */
-            color: white;
-            border: none;
-            padding: 6px 10px;
+        .stop-btn {
+            margin-left: 10px;
+            padding: 5px 10px;
             cursor: pointer;
-            font-size: 11px;
         }
-
-        #stopBtn {
-            background-color: red; /* Red */
-            color: white;
-            border: none;
-            padding: 6px 10px;
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
             cursor: pointer;
-            font-size: 11px;
-        }
-
-        #clearBtn {
-            background-color: blue; /* Blue */
-            color: white;
             border: none;
-            padding: 6px 10px;
-            cursor: pointer;
-            font-size: 11px;
+            border-radius: 5px;
+            background-color: #28a745; /* Green background */
+            color: white; /* White text */
+            font-size: 16px;
+            transition: background-color 0.3s; /* Smooth transition */
         }
-
         button:hover {
-            opacity: 0.9;
-        }
-
-        .record {
-            margin: 3px 0;
-        }
-
-        .success {
-            color: green;
-        }
-
-        .failure {
-            color: red;
-        }
-
-        /* Ensures proper layout on smaller devices */
-        @media (max-width: 768px) {
-            .container {
-                width: 100%;
-                padding: 0 10px;
-            }
-
-            .circle {
-                width: 130px;
-                height: 130px;
-                font-size: 18px;
-            }
-
-            button {
-                font-size: 10px;
-            }
+            background-color: #218838; /* Darker green on hover */
         }
     </style>
 </head>
 <body>
-    <!-- Background video -->
-    <video id="backgroundVideo" autoplay loop muted>
-        <source src="https://ghostkmr.github.io/kuduplatform/k2.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
 
-    <div class="container">
-        <h1>Service Speed Recorder</h1>
-        <div class="stopwatch">
-            <div id="timer" class="circle">00:00</div>
-            <div class="buttons">
-                <button id="startBtn">Start</button>
-                <button id="stopBtn">Stop</button>
-                <button id="clearBtn">Clear</button>
-            </div>
-        </div>
-        <div class="input-container">
-            <input type="text" id="orderName" placeholder="Order Name" required>
+<div class="container">
+    <h1>Multi Order Tracker</h1>
 
-            <!-- Radio button replacement for the dropdown -->
-            <div class="radio-container">
-                <label>
-                    <input type="radio" name="orderType" value="frontCounter" checked> Front Counter
-                </label>
-                <label>
-                    <input type="radio" name="orderType" value="driveThru"> Drive Thru
-                </label>
-            </div>
-
-            <button id="saveBtn">Save Time</button>
-        </div>
+    <div>
+        <input type="text" id="orderName" placeholder="Order Name" />
+        <label>
+            <input type="radio" name="orderType" value="frontCounter" checked /> Front Counter
+        </label>
+        <label>
+            <input type="radio" name="orderType" value="driveThru" /> Drive Thru
+        </label>
+        <button id="addOrderBtn">Add Order</button>
+        <button id="clearAllBtn">Clear All Orders</button>
         <button id="exportBtn">Export to Excel</button>
-        <button id="clearAllBtn">Clear All Records</button>
-        <div id="records"></div>
     </div>
 
-    <script>
-        let timerInterval;
-        let seconds = 0;
-        const timerDisplay = document.getElementById('timer');
-        const startBtn = document.getElementById('startBtn');
-        const stopBtn = document.getElementById('stopBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const saveBtn = document.getElementById('saveBtn');
-        const exportBtn = document.getElementById('exportBtn');
-        const clearAllBtn = document.getElementById('clearAllBtn');
-        const orderNameInput = document.getElementById('orderName');
-        const orderTypeRadio = document.querySelectorAll('input[name="orderType"]');
-        const recordsDiv = document.getElementById('records');
+    <div id="orderList"></div>
+</div>
 
-        startBtn.addEventListener('click', startTimer);
-        stopBtn.addEventListener('click', stopTimer);
-        clearBtn.addEventListener('click', clearTimer);
-        saveBtn.addEventListener('click', saveTime);
-        exportBtn.addEventListener('click', exportToExcel);
-        clearAllBtn.addEventListener('click', clearAllRecords);
+<script>
+    let orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const orderList = document.getElementById('orderList');
 
-        function startTimer() {
-            clearInterval(timerInterval);
-            seconds = 0;
-            timerInterval = setInterval(updateTimer, 1000);
+    function startOrderTimer(order) {
+        if (!order.stopped) {  // Only start the timer if the order hasn't been stopped
+            order.timer = setInterval(() => {
+                order.seconds++;
+                updateOrderDisplay(order);
+                checkOrderDeadline(order);
+            }, 1000);
+        }
+    }
+
+    function addOrder() {
+        const orderName = document.getElementById('orderName').value;
+        const orderType = document.querySelector('input[name="orderType"]:checked').value;
+
+        if (!orderName) {
+            alert("Please enter an order name.");
+            return;
         }
 
-        function stopTimer() {
-            clearInterval(timerInterval);
-        }
+        const order = {
+            id: Date.now(),
+            name: orderName,
+            type: orderType,
+            seconds: 0,
+            timer: null,
+            stopped: false,   // New property to check if the order has been stopped
+            completed: null   // Status of order (✔️ or ❌)
+        };
 
-        function clearTimer() {
-            clearInterval(timerInterval);
-            seconds = 0;
-            timerDisplay.textContent = '00:00';
-            timerDisplay.style.borderColor = 'green'; // Reset border color
-        }
+        orders.push(order);
+        saveOrders();
+        displayOrders();
+        startOrderTimer(order);
 
-        function updateTimer() {
-            seconds++;
-            let minutes = Math.floor(seconds / 60);
-            let displaySeconds = seconds % 60;
-            timerDisplay.textContent = `${pad(minutes)}:${pad(displaySeconds)}`;
+        document.getElementById('orderName').value = ''; // Clear the input
+    }
 
-            const orderType = document.querySelector('input[name="orderType"]:checked').value;
-            if (orderType === 'frontCounter') {
-                if (seconds >= 420) { // 7 minutes
-                    timerDisplay.style.borderColor = 'red';
-                } else if (seconds >= 360) { // 6 minutes
-                    timerDisplay.style.borderColor = 'orange';
-                } else {
-                    timerDisplay.style.borderColor = 'green';
-                }
-            } else if (orderType === 'driveThru') {
-                if (seconds >= 300) { // 5 minutes
-                    timerDisplay.style.borderColor = 'red';
-                } else if (seconds >= 240) { // 4 minutes
-                    timerDisplay.style.borderColor = 'yellow';
-                } else {
-                    timerDisplay.style.borderColor = 'green';
-                }
+    function updateOrderDisplay(order) {
+        const minutes = Math.floor(order.seconds / 60);
+        const displaySeconds = order.seconds % 60;
+        document.getElementById(`timer-${order.id}`).textContent = `${pad(minutes)}:${pad(displaySeconds)}`;
+    }
+
+    function checkOrderDeadline(order) {
+        const timerDisplay = document.getElementById(`timer-${order.id}`);
+        const statusSymbol = document.getElementById(`status-${order.id}`);
+
+        if (order.type === 'frontCounter') {
+            if (order.seconds < 420) {
+                timerDisplay.style.color = 'green';
+                order.completed = true;
+            } else {
+                timerDisplay.style.color = 'red';
+                order.completed = false;
+            }
+        } else if (order.type === 'driveThru') {
+            if (order.seconds < 300) {
+                timerDisplay.style.color = 'green';
+                order.completed = true;
+            } else {
+                timerDisplay.style.color = 'red';
+                order.completed = false;
             }
         }
 
-        function pad(number) {
-            return number < 10 ? '0' + number : number;
+        // Update status symbol based on completion status
+        statusSymbol.textContent = order.completed ? '✔️' : '❌';
+    }
+
+    function pad(number) {
+        return number < 10 ? '0' + number : number;
+    }
+
+    function displayOrders() {
+        orderList.innerHTML = '';
+        orders.forEach(order => {
+            const orderItem = document.createElement('div');
+            orderItem.classList.add('order-item');
+            orderItem.innerHTML = `
+                <span><strong>${order.name}</strong><span class="order-type"> (${order.type})</span></span>
+                <span id="timer-${order.id}" class="order-timer">00:00</span>
+                <span id="status-${order.id}" class="status-symbol">${order.completed ? '✔️' : '❌'}</span>
+                <button class="stop-btn" onclick="stopOrder(${order.id})">Stop</button>
+            `;
+            orderList.appendChild(orderItem);
+
+            if (order.stopped) {
+                // Display the stopped time if the order was stopped
+                const minutes = Math.floor(order.seconds / 60);
+                const displaySeconds = order.seconds % 60;
+                document.getElementById(`timer-${order.id}`).textContent = `${pad(minutes)}:${pad(displaySeconds)}`;
+            }
+        });
+    }
+
+    function stopOrder(orderId) {
+        const order = orders.find(o => o.id === orderId);
+        if (order) {
+            clearInterval(order.timer); // Stop the timer
+            order.stopped = true; // Mark the order as stopped
+            saveOrders();
+            displayOrders();
         }
+    }
 
-        function saveTime() {
-            const orderName = orderNameInput.value;
-            const orderType = document.querySelector('input[name="orderType"]:checked').value === 'frontCounter' ? 'Front Counter' : 'Drive Thru';
-            const timeRecord = {
-                orderName,
-                orderType,
-                time: timerDisplay.textContent,
-                seconds
-            };
+    function saveOrders() {
+        localStorage.setItem('orders', JSON.stringify(orders));
+    }
 
-            // Save to local storage
-            let records = JSON.parse(localStorage.getItem('records')) || [];
-            records.push(timeRecord);
-            localStorage.setItem('records', JSON.stringify(records));
-            displayRecords(records);
-            orderNameInput.value = ''; // Clear input field after saving
-        }
+    function clearAllOrders() {
+        orders.forEach(order => clearInterval(order.timer)); // Stop all timers
+        orders = [];
+        saveOrders();
+        displayOrders();
+    }
 
-        function displayRecords(records) {
-            recordsDiv.innerHTML = '';
-            records.forEach(record => {
-                const statusSymbol = (record.orderType === 'Front Counter' && record.seconds > 420) || (record.orderType === 'Drive Thru' && record.seconds > 300) ? '❌' : '✔️';
-                const statusClass = statusSymbol === '✔️' ? 'success' : 'failure';
-                recordsDiv.innerHTML += `<div class="record ${statusClass}">${statusSymbol} ${record.orderName} - ${record.orderType} - ${record.time}</div>`;
-            });
-        }
+    function exportToExcel() {
+        let csvContent = "data:text/csv;charset=utf-8,Order Name,Order Type,Time,Status\n";
+        orders.forEach(order => {
+            const minutes = Math.floor(order.seconds / 60);
+            const seconds = order.seconds % 60;
+            const status = order.completed ? '✔️' : '❌';
+            csvContent += `${order.name},${order.type},${pad(minutes)}:${pad(seconds)},${status}\n`;
+        });
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', 'orders.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 
-        function clearAllRecords() {
-            localStorage.removeItem('records');
-            recordsDiv.innerHTML = '';
-        }
+    document.getElementById('addOrderBtn').addEventListener('click', addOrder);
+    document.getElementById('clearAllBtn').addEventListener('click', clearAllOrders);
+    document.getElementById('exportBtn').addEventListener('click', exportToExcel);
 
-        function exportToExcel() {
-            let records = JSON.parse(localStorage.getItem('records')) || [];
-            let csvContent = "data:text/csv;charset=utf-8,Order Name,Order Type,Time\n";
-            records.forEach(record => {
-                csvContent += `${record.orderName},${record.orderType},${record.time}\n`;
-            });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement('a');
-            link.setAttribute('href', encodedUri);
-            link.setAttribute('download', 'records.csv');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+    window.onload = function() {
+        displayOrders();
+        orders.forEach(order => {
+            if (!order.stopped) {  // Only restart the timer if it hasn't been stopped
+                startOrderTimer(order);
+            }
+        });
+    };
+</script>
 
-        window.onload = function () {
-            let records = JSON.parse(localStorage.getItem('records')) || [];
-            displayRecords(records);
-        };
-    </script>
 </body>
 </html>
