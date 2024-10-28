@@ -4,310 +4,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="theme-color" content="#f53f2b">
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="description" content="Portfolio of Mueen Khan, Web Designer and Restaurant Manager">
-    <meta name="keywords" content="HTML, CSS, JavaScript, WordPress, Developer">
-    <meta name="author" content="Mueen Khan">
-    <link rel="shortcut icon" href="assets/img/aboutme.jpg" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@master/devicon.min.css">
-    <script src="https://kit.fontawesome.com/4019246ab4.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <title>Mueen Khan | Web Designer / Restaurant Manager</title>
+    <title>Mueen Khan | About Me</title>
     <style>
         body {
-            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
-            margin: 0;
             font-family: 'Arial', sans-serif;
-        }
-
-        .landing {
+            background: linear-gradient(to bottom right, #f53f2b, #4facfe);
+            margin: 0;
+            color: #333;
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
-            padding: 60px;
-            text-align: center;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        .img img {
+        .about-container {
+            background: #000;
+            color: #fff;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            animation: slideIn 1s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-img {
+            border-radius: 50%;
             width: 150px;
             height: 150px;
-            border-radius: 50%;
-            border: 4px solid #fff;
+            border: 5px solid #f53f2b;
+            margin-top: -30px;
             transition: transform 0.3s ease;
         }
 
-        .img img:hover {
+        .profile-img:hover {
             transform: scale(1.1);
         }
 
-        .me h2,
-        .me h3 {
-            color: #333;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .about {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            color: #333;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .title {
-            font-size: 2.5em;
-            color: #f53f2b;
-            margin-bottom: 20px;
-            font-weight: bold;
+        .about-content {
             text-align: center;
+            padding: 15px;
+            margin-top: 0;
         }
 
-        .card-wrapper {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .box {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            flex-basis: 30%;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .box img {
-            max-width: 100%;
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .box img:hover {
-            transform: scale(1.05);
-        }
-
-        .resume button,
-        button {
-            padding: 12px 25px;
-            background: #f53f2b;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
-        .resume button:hover,
-        button:hover {
-            background: #c62828;
-            transform: scale(1.05);
-        }
-
-        .mainlist {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sublist {
-            display: flex;
-            align-items: center;
+        .about-title {
+            font-size: 2em;
+            color: #f53f2b;
             margin-bottom: 10px;
         }
 
-        .icon {
-            margin-right: 15px;
+        .about-subtitle {
+            font-size: 1.2em;
+            color: #4facfe;
+            margin: 10px 0;
         }
 
-        .icon img,
-        .icon i {
-            width: 40px;
-            height: 40px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 0.9em;
-            color: #333;
-        }
-
-        .footer a {
-            color: #f53f2b;
-            text-decoration: none;
-        }
-
-        .social-icons-bar {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px;
-            border-radius: 10px;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .social-icons-bar.active {
-            display: flex;
-        }
-
-        .social-icons-bar a {
-            margin: 5px;
+        .about-text {
+            font-size: 1em;
+            line-height: 1.5;
             color: #fff;
+            padding: 0 15px;
         }
 
-        .social-icons-bar img {
-            width: 28px;
-            height: 28px;
+        .qualifications {
+            margin-top: 20px;
+            padding: 15px;
+            background: #111;
+            border-radius: 10px;
+            width: 100%;
+            text-align: center;
         }
 
-        .social-toggle {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            cursor: pointer;
-            background: #333;
-            padding: 10px;
-            border-radius: 50%;
+        .qualifications h2 {
+            color: #f53f2b;
+            font-size: 1.5em;
+            margin-bottom: 10px;
         }
 
-        .social-toggle .toggle-line {
-            width: 30px;
-            height: 4px;
-            background: #fff;
+        .qualifications ul {
+            list-style: none;
+            padding: 0;
+            color: #fff;
+            font-size: 1em;
+            margin: 0;
+        }
+
+        .qualifications ul li {
             margin: 5px 0;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .skill-item {
+            background: #f53f2b;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
             transition: background 0.3s ease;
         }
 
-        .social-toggle:hover .toggle-line {
-            background: #f53f2b;
+        .skill-item:hover {
+            background: #c62828;
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 20px;
         }
     </style>
+    <!-- Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <div class="landing">
-        <div class="img animate__animated animate__slideInDown wow" data-wow-duration="1.5s" data-wow-delay="0.3s">
-            <img src="https://mueenulislam.github.io/f4.jpg" alt="Mueen Khan">
+    <div class="about-container">
+        <img class="profile-img" src="https://mueenulislam.github.io/f4.jpg" alt="Mueen Khan">
+        <div class="about-content">
+            <h1 class="about-title">Mueen Khan</h1>
+            <p class="about-subtitle">Web Designer & Restaurant Manager</p>
+            <p class="about-text">
+                Hi! I am Mueen ul Islam Khan, also known as Ghost. I'm a versatile professional with a degree in Computer Applications and a passion for design and innovation. My career spans both tech and hospitality, where I continually seek to push creative boundaries and grow across industries.
+            </p>
         </div>
-        <div class="me animate__animated animate__slideInUp wow" data-wow-duration="1.5s" data-wow-delay="0.3s">
-            <section class="shortme">
-                <h2>Mueen Khan aka Ghost!!</h2>
-            </section>
-            <h3 id="typed"></h3>
+        
+        <!-- Qualifications Section -->
+        <div class="qualifications">
+            <h2>Qualifications</h2>
+            <ul>
+                <li>Computer Applications Degree Holder</li>
+                <li>Freelancer</li>
+                <li>P&L Management</li>
+                <li>Marketing and Sales</li>
+            </ul>
         </div>
-    </div>
-    <div class="about">
-        <div class="title">Portfolio</div>
-        <div class="card-wrapper">
-            <div class="box box1 animate__animated animate__slideInLeft wow" data-wow-duration="1s" data-wow-delay="0s">
-                <span><b>About Me</b></span>
-                <img src="https://mueenulislam.github.io/f2.jpg" alt="About Me">
-                <p>Hey! I am Mueen ul Islam Khan, aka Ghost, from India.<br>I have a degree in Computer Applications.<br>I love designing websites and have pursued a career in the restaurant field as a passion, wishing to evolve beyond boundaries.</p>
-            </div>
-            <div class="box box2 animate__animated animate__slideInUp wow" data-wow-duration="1s" data-wow-delay="0.37s">
-                <span><b>Skills</b></span>
-                <br><span>Programming</span>
-                <ul class="mainlist">
-                    <ul class="sublist">
-                        <li class="icon"><i class="devicon-c-plain-wordmark"></i></li>
-                        <li>C</li>
-                    </ul>
-                    <ul class="sublist">
-                        <li class="icon"><i class="devicon-cplusplus-plain-wordmark"></i></li>
-                        <li>C++</li>
-                    </ul>
-                    <ul class="sublist">
-                        <li class="icon"><i class="devicon-java-plain-wordmark"></i></li>
-                        <li>Java</li>
-                    </ul>
-                    <ul class="sublist">
-                        <li class="icon"><i class="devicon-css3-plain-wordmark"></i></li>
-                        <li>CSS</li>
-                    </ul>
-                    <ul class="sublist">
-                        <li class="icon"><i class="devicon-html5-plain-wordmark"></i></li>
-                        <li>HTML</li>
-                    </ul>
-                    <ul class="sublist">
-                        <li class="icon"><i class="devicon-javascript-plain"></i></li>
-                        <li>JavaScript</li>
-                    </ul>
-                    <ul class="sublist">
-                        <li class="icon"><i class="devicon-php-plain"></i></li>
-                        <li>PHP</li>
-                    </ul>
-                    <ul class="sublist">
-                        <li class="icon"><i class="devicon-wordpress-plain"></i></li>
-                        <li>WordPress</li>
-                    </ul>
-                </ul>
-            </div>
-            <div class="box box3 animate__animated animate__slideInRight wow" data-wow-duration="1s" data-wow-delay="0.37s">
-                <span><b>Contact</b></span>
-                <ul class="mainlist">
-                    <ul class="sublist">
-                        <li class="icon"><i class="fas fa-phone-alt"></i></li>
-                        <li>+966567341924</li>
-                    </ul>
-                    <ul class="sublist">
-                        <li class="icon"><i class="fas fa-envelope"></i></li>
-                        <li><a href="moinranzao2@gmail.com">yuhoooo!</a></li>
-                    </ul>
-                    <ul class="sublist">
-                        <li class="icon"><i class="fas fa-map-marker-alt"></i></li>
-                        <li>Delhi, India</li>
-                    </ul>
-                </ul>
-            </div>
+
+        <!-- Skills List -->
+        <div class="skills-list">
+            <div class="skill-item">HTML</div>
+            <div class="skill-item">CSS</div>
+            <div class="skill-item">JavaScript</div>
+            <div class="skill-item">PHP</div>
+            <div class="skill-item">WordPress</div>
         </div>
-        <div class="resume">
-            <button type="button"><a href="assets/resume.pdf" download="Mueen_Khan_Resume.pdf">Download Resume</a></button>
+
+        <!-- Growth Chart -->
+        <div class="chart-container">
+            <canvas id="growthChart"></canvas>
         </div>
     </div>
-    <div class="footer">
-        <p>Designed by <a href="https://github.com/Mueenulislam" target="_blank">Mueen Khan</a></p>
-    </div>
-    <div class="social-toggle">
-        <div class="toggle-line"></div>
-        <div class="toggle-line"></div>
-        <div class="toggle-line"></div>
-    </div>
-    <div class="social-icons-bar">
-        <a href="https://github.com/" target="_blank"><img src="assets/img/github.svg" alt="Github"></a>
-        <a href="https://www.linkedin.com/in/mueen-khan-34a515226/" target="_blank"><img src="assets/img/linkedin.svg" alt="LinkedIn"></a>
-        <a href="https://twitter.com/mueenul_15" target="_blank"><img src="assets/img/twitter.svg" alt="Twitter"></a>
-    </div>
+
     <script>
-        document.querySelector('.social-toggle').addEventListener('click', function () {
-            document.querySelector('.social-icons-bar').classList.toggle('active');
+        // Line chart for Growth
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+                datasets: [{
+                    label: 'Career Growth',
+                    data: [20, 40, 60, 80, 100, 120],
+                    backgroundColor: 'rgba(245, 63, 43, 0.2)',
+                    borderColor: '#f53f2b',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#4facfe',
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: "#fff"
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "#fff"
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: "#fff"
+                        }
+                    }
+                }
+            }
         });
-    </script>
-    <script src="assets/js/typed.js"></script>
-    <script>
-        var options = {
-            strings: ["Web Designer", "Restaurant Manager", "Freelancer"],
-            typeSpeed: 60,
-            backSpeed: 40,
-            loop: true,
-        };
-        var typed = new Typed("#typed", options);
     </script>
 </body>
 
